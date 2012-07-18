@@ -3,7 +3,7 @@ Dynamics in Sequence Space Optimisation (DSS-Opt)
 RNA sequence design for a given target secondary structure.  Sequences
 are designed by optimising a design score in a continuous sequence
 space, allowing a mixture of bases at each position during
-optimisation.  Towards the end of the simulation, 
+optimisation.
 
 The code can be compiled by running `make', the dynamics in sequence
 space optimisation is performed with the program opt-md.
