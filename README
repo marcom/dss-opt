@@ -1,0 +1,20 @@
+Dynamics in Sequence Space Optimisation (DSS-Opt)
+
+RNA sequence design for a given target secondary structure.
+
+All code was written by Marco Matthies, Centre for Bioinforamtics, Hamburg
+and licensed under the GNU General Public License, version 3 or later.
+
+[ sorry for lack of git history ]
+
+[ add paper reference once it's out ]
+
+[ parameters taken/converted from vienna-rna package, say thanks ]
+
+[ how to call opt-md ]
+
+[ compilation instructions ]
+[ rna-ensemble-distance needs vienna rna, how to compile and use it ]
+
+
+
