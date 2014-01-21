@@ -23,7 +23,7 @@ The parameters for the RNA nearest neighbour energy model were
 converted from Vienna RNA, many thanks to them.  The script used to
 convert them is under scripts/.
 
-All code was written by Marco Matthies, Centre for Bioinforamtics,
+All code was written by Marco Matthies, Centre for Bioinformatics,
 Hamburg and is licensed under the GNU General Public License, version
 3 or later.
 
