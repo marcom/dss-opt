@@ -5,7 +5,7 @@
 void
 x_ensure_positive(char *progname, char *optname, double val)
 {
-    if (! val > 0) {
+    if (! (val > 0)) {
         printf("%s: %s must be > 0 (is %f)\n",
                progname, optname, val);
         exit(EXIT_FAILURE);
