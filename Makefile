@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all lib clean
 
 CC      = gcc
 CFLAGS  = -std=c99 -I.
@@ -22,10 +22,16 @@ OBJS_CTOOLS = ctools/dary.o ctools/libctools.o ctools/num_utils.o ctools/random.
 OBJS_MD     = md/md.o
 ALLOBJS     = $(OBJS_COMMON) $(OBJS_OPT) $(OBJS_CTOOLS) $(OBJS_MD)
 
+LIB_FILE_EXT = so
+LIBDSSOPT    = libdssopt.$(LIB_FILE_EXT)
+ALLOBJS_SRC := $(subst .o,.c, $(ALLOBJS))
+
 all: $(ALLPROGS)
 
+lib: $(LIBDSSOPT)
+
 clean:
-	rm -f $(ALLPROGS) $(ALLOBJS)
+	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -35,3 +41,6 @@ $(PROGS_OPT): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
 
 $(PROGS_GSL): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS_GSL)
+
+$(LIBDSSOPT): $(ALLOBJS_SRC)
+	$(CC) -shared -fPIC $(CFLAGS) $^ -o $@ $(LDFLAGS)
