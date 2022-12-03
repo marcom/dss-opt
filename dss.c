@@ -2,8 +2,15 @@
 #include "ctools/num_utils.h"
 #include "ctools/dary.h"
 #include "na.h"
-#include <alloca.h>
 #include <math.h>
+
+#ifndef _WIN32
+#include <alloca.h>
+#else
+/* windows doesn't have alloca.h, alloca() is in malloc.h */
+#include <malloc.h>
+#endif
+
 
 /* additional "energy" functions for dynamics in sequence space */
 
