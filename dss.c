@@ -4,13 +4,24 @@
 #include "na.h"
 #include <math.h>
 
-#ifndef _WIN32
+/* which include file for alloca() */
+#ifdef __linux__
+/* alloca.h on linux */
 #include <alloca.h>
 #else
+#ifdef __APPLE__
+/* alloca.h on mac */
+#include <alloca.h>
+#else
+#ifdef _WIN32
 /* windows doesn't have alloca.h, alloca() is in malloc.h */
 #include <malloc.h>
+#else
+/* stdlib.h on freebsd and others */
+#include <stdlib.h>
 #endif
-
+#endif
+#endif
 
 /* additional "energy" functions for dynamics in sequence space */
 
