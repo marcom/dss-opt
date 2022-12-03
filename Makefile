@@ -1,6 +1,6 @@
 .PHONY: all lib clean
 
-CC      = gcc
+CC      = cc
 CFLAGS  = -std=c99 -I.
 CFLAGS += -O2 -ggdb3
 CFLAGS += -pedantic -Wall -Wextra -Wshadow
