@@ -1,10 +1,11 @@
 .PHONY: all lib clean
 
 CC      = cc
-CFLAGS  = -std=c99 -I.
+CFLAGS += -std=c99
 CFLAGS += -O2 -ggdb3
 CFLAGS += -pedantic -Wall -Wextra -Wshadow
-CFLAGS += -Wno-unused-parameter -Wno-unused-variable
+CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-absolute-value
+CPPFLAGS += -I.
 
 #CFLAGS += -DNDEBUG
 
@@ -34,13 +35,13 @@ clean:
 	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(PROGS_OPT): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(PROGS_GSL): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS_GSL)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS_GSL)
 
 $(LIBDSSOPT): $(ALLOBJS_SRC)
-	$(CC) -shared -fPIC $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) -shared -fPIC $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
