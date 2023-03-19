@@ -1,5 +1,10 @@
 Dynamics in Sequence Space Optimisation (DSS-Opt)
 
+Marco C. Matthies, Stefan Bienert, Andrew E. Torda. Dynamics in
+Sequence Space for RNA Secondary Structure Design. J. Chem. Theory
+Comput., 2012, 8, 10, 3663--3670.
+https://doi.org/10.1021/ct300267j
+
 RNA sequence design for a given target secondary structure.  Sequences
 are designed by optimising a design score in a continuous sequence
 space, allowing a mixture of bases at each position during
