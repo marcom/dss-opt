@@ -6,6 +6,8 @@ CFLAGS += -O3
 #CFLAGS += -O2 -ggdb3
 CFLAGS += -pedantic -Wall -Wextra -Wshadow
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-absolute-value
+CFLAGS += -Wstrict-prototypes
+# CFLAGS += -Wmissing-prototypes
 CPPFLAGS += -I.
 
 #CFLAGS += -DNDEBUG
