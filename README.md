@@ -14,6 +14,9 @@ https://doi.org/10.1021/ct300267j
 
 ## Running the program
 
+The dynamics in sequence space optimisation is performed with the program `opt-md`.
+The `opt-sd` and `opt-sd-gsl` programs perform sequence design by gradient descent alone
+and are not described in the paper.
 ```
 # show command-line arguments
 ./opt-md -h
@@ -28,22 +31,18 @@ https://doi.org/10.1021/ct300267j
 
 ## Build instructions
 
-The code can be compiled by running `make`. You need the GSL (GNU
-Scientific Library) installed.  The dynamics in sequence space
-optimisation is performed with the program `opt-md`. The `opt-sd` and
-`opt-sd-gsl` programs perform sequence design only by gradient descent
-and are not described in the paper.
+The code can be compiled by running `make` in this directory. You need
+the GSL (GNU Scientific Library) header files and library installed
+(`libgsl-dev` package in Ubuntu).
 
-There is a little utility program that uses the ViennaRNA library to
-compute the ensemble defect of a designed sequence to a given target
-structure.  You can find it under the directory
-`rna-ensemble-distance-with-ViennaRNA/`.  To compile this code, you
-will need to have
-[ViennaRNA-1.8.5](https://www.tbi.univie.ac.at/RNA/download/sourcecode/1_8_x/ViennaRNA-1.8.5.tar.gz)
-installed (header files and static library). Run `make
-VIENNA=/path/to/installed/ViennaRNA-1.8.5` in the
-`rna-ensemble-distance-with-ViennaRNA/` directory to
-compile.
+Additionally, there is a little utility program called
+`rna-ensemble-distance` that uses the ViennaRNA library to compute the
+target probability and ensemble defect of a designed sequence with
+respect to a given target structure.  You can find it in the
+`rna-ensemble-distance-with-ViennaRNA/` directory. The
+[README.md](./rna-ensemble-distance-with-ViennaRNA/README.md) file in
+this directory contains instructions on how to build this utility.
+
 
 ## Energy parameters
 
