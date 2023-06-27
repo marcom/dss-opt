@@ -39,9 +39,10 @@ Additionally, there is a little utility program called
 `rna-ensemble-distance` that uses the ViennaRNA library to compute the
 target probability and ensemble defect of a designed sequence with
 respect to a given target structure.  You can find it in the
-`rna-ensemble-distance-with-ViennaRNA/` directory. The
-[README.md](./rna-ensemble-distance-with-ViennaRNA/README.md) file in
-this directory contains instructions on how to build this utility.
+`rna-ensemble-distance-with-ViennaRNA/` directory. The README file in
+the
+[rna-ensemble-distance-with-ViennaRNA/](./rna-ensemble-distance-with-ViennaRNA/)
+directory contains instructions on how to build this utility.
 
 
 ## Energy parameters
