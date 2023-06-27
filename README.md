@@ -20,12 +20,15 @@ optimisation is performed with the program `opt-md`. The `opt-sd` and
 `opt-sd-gsl` programs perform sequence design only by gradient descent
 and are not described in the paper.
 
-There is a little program that uses the Vienna RNA library to compute
+There is a little program that uses the ViennaRNA library to compute
 the ensemble defect of a designed sequence to a given target
 structure.  You can find it under the directory
 `rna-ensemble-distance-with-ViennaRNA/`.  Edit the Makefile in this
-subdirectory to point to the directory where you installed the Vienna
-RNA package, then run `make`.
+subdirectory to point to the directory where you installed
+ViennaRNA-1.8.5, then run `make`.
+
+ViennaRNA-1.8.5 can be downloaded here:
+https://www.tbi.univie.ac.at/RNA/download/sourcecode/1_8_x/ViennaRNA-1.8.5.tar.gz
 
 ## Energy parameters
 
