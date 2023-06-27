@@ -14,7 +14,7 @@ structure as input.
 # target_ens_defect is the ensemble defect of the target structure
 ```
 
-## Building instructions
+## Build instructions
 
 Simply run `make` in this directory:
 
