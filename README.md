@@ -31,7 +31,7 @@ RNA package, then run `make`.
 
 The parameters for the RNA nearest neighbour energy model were
 converted from ViennaRNA, many thanks to them.  The parameters were
-converted from the ViennaRNA-1.7 `param/vienna17.par` parameter file
+converted from the ViennaRNA-1.8.5 `param/vienna17.par` parameter file
 to C code with `scripts/vienna_parse_param.py`. The generated C code
 containing the parameters can be found in `nn_param.c`.
 
