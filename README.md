@@ -17,7 +17,7 @@ https://doi.org/10.1021/ct300267j
 The code can be compiled by running `make`. You need the GSL (GNU
 Scientific Library) installed.  The dynamics in sequence space
 optimisation is performed with the program `opt-md`. The `opt-sd` and
-`opt-sd-gsl` programs perform sequence design only by gradient-descent
+`opt-sd-gsl` programs perform sequence design only by gradient descent
 and are not described in the paper.
 
 There is a little program that uses the Vienna RNA library to compute
@@ -32,8 +32,8 @@ RNA package, then run `make`.
 The parameters for the RNA nearest neighbour energy model were
 converted from ViennaRNA, many thanks to them.  The parameters were
 converted from the ViennaRNA-1.7 `param/vienna17.par` parameter file
-to C code with the `scripts/vienna_parse_param.py` script. The
-resulting C code can be found in `nn_param.c`.
+to C code with `scripts/vienna_parse_param.py`. The generated C code
+containing the parameters can be found in `nn_param.c`.
 
 ## Copyright and license
 
