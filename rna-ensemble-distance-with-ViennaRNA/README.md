@@ -16,17 +16,19 @@ structure as input.
 
 ## Building instructions
 
+Simply run `make` in this directory:
+
 ```
 make
 ```
 
 Tested with gcc-11.3.0 on Ubuntu 22.04. The Makefile by default
-downloads and builds ViennaRNA-1.8.5 as it needs a small patch to
-build on newer compilers (see `build-ViennaRNA-1.8.5.bash` for
-details).
+downloads and builds ViennaRNA-1.8.5. It automatically applies a small
+patch that is needed to build ViennaRNA-1.8.5 with newer compilers,
+see the `build-ViennaRNA-1.8.5.bash` script for details.
 
 In case you already have ViennaRNA-1.8.5 installed (header files and
-static library), you can use:
+static library), you can run:
 
 ```
 make VIENNA=/path/to/installed/ViennaRNA-1.8.5
