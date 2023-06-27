@@ -29,5 +29,5 @@ In case you already have ViennaRNA-1.8.5 installed (header files and
 static library), you can use:
 
 ```
-make VIENNA=/path/to/installed/ViennaRNA-1.8.5 rna-ensemble-distance
+make VIENNA=/path/to/installed/ViennaRNA-1.8.5
 ```
