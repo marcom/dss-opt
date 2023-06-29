@@ -1,4 +1,4 @@
-.PHONY: all lib clean
+.PHONY: all lib check test tests clean
 
 CC      = cc
 CFLAGS += -std=c99
@@ -36,6 +36,12 @@ lib: $(LIBDSSOPT)
 
 clean:
 	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
+
+check:
+	./tests/test-executables.bash
+# aliases for check
+test: check
+tests: check
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
