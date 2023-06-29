@@ -486,7 +486,7 @@ helper_random_pairs_iter(uint *pairs, uint i, uint j, uint hpmin)
     uint p, q;
     if (i > j - hpmin - 1)
         return;
-    p = random_uint(i - 1, j - hpmin - 1);
+    p = random_uint(i, j - hpmin - 1);
     q = random_uint(p + hpmin + 1, j);
     if (p != i - 1) {
         pairs[p] = q;
