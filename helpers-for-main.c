@@ -116,7 +116,7 @@ calc_dmin(double **p, size_t ndim, size_t i)
 }
 
 void
-show_bad_prob(double **p, size_t n, size_t ndim)
+show_bad_prob(double **p, size_t n, size_t ndim, bool verbose)
 {
     size_t i;
     double di_min, d_max = 0, d_avg = 0;
@@ -127,9 +127,11 @@ show_bad_prob(double **p, size_t n, size_t ndim)
         d_avg += di_min;
     }
     d_avg /= n;
-    printf("p: d_max = %f\n", d_max);
-    printf("p: d_avg = %f\n", d_avg);
-    printf("\n");
+    if (verbose) {
+        printf("p: d_max = %f\n", d_max);
+        printf("p: d_avg = %f\n", d_avg);
+        printf("\n");
+    }
 #if 0
     size_t j;
     for (i = 0; i < n; i++) {

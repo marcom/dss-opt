@@ -109,14 +109,14 @@ my_fdf(const gsl_vector *x, void *params, double *f, gsl_vector *df)
 static int
 run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
        double kpi, double kpa, double kpur, double kneg, double khet,
-       uint het_window, bool do_movie_output)
+       uint het_window, bool do_movie_output, bool verbose,
+       char **designed_seq)
 {
     uint i, j, step, n;
     double G, Gnn, **p, **dGdp, Gstart = 0, Gold, delta, tmp;
     double scale = 0.01, scale_min = 1e-8,
         scale_decrease = 0.5, scale_increase = 1.05;
     double **K_nj = helper_make_K_nj_alloc(ndim);
-    char *seq;
     size_t nfixed_bp;
     struct nn_inter *inter;
 
@@ -127,7 +127,6 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
 
     xmalloc2d_one_chunk(p, n, ndim);
     xmalloc2d_one_chunk(dGdp, n, ndim);
-    seq = xmalloc((n + 1) * sizeof(*seq));
 
     /* random perturbation (wiggle) from equidistribution */
     dary2d_set(n, ndim, p, 1.0 / ndim);
@@ -147,18 +146,20 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
             p[i][j] /= tmp;
     }        
 
-    printf("target     = %s\n", vienna);
-    printf("wiggle     = %f\n", wiggle);
-    printf("kpi        = %f\n", kpi);
-    printf("kpa        = %f\n", kpa);
-    printf("kpur       = %f\n", kpur);
-    printf("kneg       = %f\n", kneg);
-    printf("khet       = %f\n", khet);
-    printf("het_window = %u\n", het_window);
-    printf("\n");
-    printf("maxsteps   = %u\n", maxsteps);
-    printf("nprint     = %u\n", nprint);
-    printf("\n");
+    if (verbose) {
+        printf("target     = %s\n", vienna);
+        printf("wiggle     = %f\n", wiggle);
+        printf("kpi        = %f\n", kpi);
+        printf("kpa        = %f\n", kpa);
+        printf("kpur       = %f\n", kpur);
+        printf("kneg       = %f\n", kneg);
+        printf("khet       = %f\n", khet);
+        printf("het_window = %u\n", het_window);
+        printf("\n");
+        printf("maxsteps   = %u\n", maxsteps);
+        printf("nprint     = %u\n", nprint);
+        printf("\n");
+    }
 
     struct dss_params params;
     params.n = n;
@@ -209,7 +210,9 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
     int status;
     for (cycle = 0; cycle < ncycles; cycle++) {
         /* steepest descent */
-        printf ("'%s' minimizer\n", gsl_multimin_fdfminimizer_name(sd));
+        if (verbose) {
+            printf ("'%s' minimizer\n", gsl_multimin_fdfminimizer_name(sd));
+        }
         gsl_multimin_fdfminimizer_set(sd, &my_func, x, step_size, sd_tol);
         iter = 0;
         do {
@@ -217,18 +220,24 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
             if (status)
                 break;
             status = gsl_multimin_test_gradient(sd->gradient, sd_tol_gradient);
-            if (status == GSL_SUCCESS)
-                printf ("SD: Minimum found at:\n");
-            if (iter % nprint == 0)
-                printf ("SD: %7d % 12.4f\n", iter, sd->f);
+            if (verbose) {
+                if (status == GSL_SUCCESS)
+                    printf ("SD: Minimum found at:\n");
+                if (iter % nprint == 0)
+                    printf ("SD: %7d % 12.4f\n", iter, sd->f);
+            }
             iter++;
             alliter++;
         } while (status == GSL_CONTINUE && iter < maxsteps_sd && alliter < maxsteps);
-        printf ("SD: %7d % 12.4f\n", iter, sd->f);
+        if (verbose) {
+            printf ("SD: %7d % 12.4f\n", iter, sd->f);
+        }
         x = sd->x;
 
         /* conjugate gradients */
-        printf ("'%s' minimizer\n", gsl_multimin_fdfminimizer_name(cg));
+        if (verbose) {
+            printf ("'%s' minimizer\n", gsl_multimin_fdfminimizer_name(cg));
+        }
         gsl_multimin_fdfminimizer_set(cg, &my_func, x, step_size, cg_tol);
         iter = 0;
         do {
@@ -236,14 +245,18 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
             if (status)
                 break;
             status = gsl_multimin_test_gradient(cg->gradient, cg_tol_gradient);
-            if (status == GSL_SUCCESS)
-                printf ("CG: Minimum found at:\n");
-            if (iter % nprint == 0)
-                printf ("CG: %7d % 12.4f\n", iter, cg->f);
+            if (verbose) {
+                if (status == GSL_SUCCESS)
+                    printf ("CG: Minimum found at:\n");
+                if (iter % nprint == 0)
+                    printf ("CG: %7d % 12.4f\n", iter, cg->f);
+            }
             iter++;
             alliter++;
         } while (status == GSL_CONTINUE && iter < maxsteps_cg && alliter < maxsteps);
-        printf ("CG: %7d % 12.4f\n", iter, cg->f);
+        if (verbose) {
+            printf ("CG: %7d % 12.4f\n", iter, cg->f);
+        }
         x = cg->x;
     }
 
@@ -251,28 +264,30 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
     gsl_multimin_fdfminimizer_free(cg);
     gsl_vector_free(old_x);
 
-    printf("END\n\n");
-
+    if (verbose) {
+        printf("END\n\n");
+    }
 
     /* TODO: all this post-optimisation output is the same in opt-md,
        move to common lib function */
-    pseq_to_str(p, n, ndim, seq);
-    show_bad_prob(p, n, ndim);
-    show_bad_bp(seq, inter->pairs, n);
-    printf("before = %s\n", seq);
-    printf("fixing bad base pairs\n");
-    nfixed_bp = fix_bad_bp(seq, inter->pairs, n);
-    printf("nfixed_bp = %zu\n", nfixed_bp);
-    printf("\n");
+    pseq_to_str(p, n, ndim, *designed_seq);
+    show_bad_prob(p, n, ndim, verbose);
+    show_bad_bp(*designed_seq, inter->pairs, n);
+    if (verbose) {
+        printf("before = %s\n", *designed_seq);
+        printf("fixing bad base pairs\n");
+    }
+    nfixed_bp = fix_bad_bp(*designed_seq, inter->pairs, n);
+    if (verbose) {
+        printf("nfixed_bp = %zu\n", nfixed_bp);
+        printf("\n");
 
-    print_design_score_info_for_seq(inter, seq, n, ndim, K_nj, kpi, kpa,
-                                    kpur, kneg, khet, het_window);
-    printf("vienna = %s\n", vienna);
-    printf("seq    = %s\n", seq);
-
+        print_design_score_info_for_seq(inter, *designed_seq, n, ndim, K_nj, kpi, kpa,
+                                        kpur, kneg, khet, het_window);
+        printf("vienna = %s\n", vienna);
+    }
     free(K_nj);
     nn_inter_delete(inter);
-    free(seq);
     free(p);
     free(dGdp);
     return EXIT_SUCCESS;
@@ -293,6 +308,7 @@ usage(char *progname)
            "  --het-window w    set window that heterogeneity terms is applied to to w bases left and right\n"
            "  --wiggle w        set wiggle (initial deviation from equidistribution) to w\n"
            "  --movie           activate output that can be used to make a movie out of it\n"
+           "  --quiet           minimise output\n"
            "  --seed s          set seed of random number generator to s\n",
            progname);
 }
@@ -307,7 +323,7 @@ main(int argc, char **argv)
     double wiggle = 0.1;
     double kpi, kpa, kneg, kpur, khet;
     uint het_window;
-    bool do_movie_output = false;
+    bool do_movie_output = false, verbose = true;
     ulong seed = random_get_seedval_from_current_time();
     set_dss_force_constants_defaults(&kpi, &kpa, &kneg, &kpur, &khet, &het_window);
 
@@ -327,6 +343,7 @@ main(int argc, char **argv)
             {"khet",       required_argument, 0, 0},
             {"het-window", required_argument, 0, 0},
             {"seed",       required_argument, 0, 0},
+            {"quiet",      no_argument,       0, 0},
             {0, 0, 0, 0} /* end marker */
         };
 
@@ -360,6 +377,8 @@ main(int argc, char **argv)
                 break;
             case 10: seed = atol(optarg);
                 break;
+            case 11: verbose = false;
+                break;
             default:
                 printf("ERROR in getopt parsing\n");
                 exit(EXIT_FAILURE);
@@ -392,9 +411,20 @@ main(int argc, char **argv)
     x_ensure_positive(argv[0], "kpa", kpa);
 
     /* run */
-    printf("optimisation by steepest descent\n");
-    printf("seed = %lu\n", seed);
+    if (verbose) {
+        printf("optimisation by steepest descent\n");
+        printf("seed = %lu\n", seed);
+    }
     random_seed(seed);
-    return run_sd(vienna, maxsteps, nprint, wiggle, kpi, kpa, kpur, kneg,
-                  khet, het_window, do_movie_output);
+    char *designed_seq = xmalloc((strlen(vienna) + 1) * sizeof(*designed_seq));
+    int status = run_sd(vienna, maxsteps, nprint, wiggle, kpi, kpa, kpur, kneg,
+                        khet, het_window, do_movie_output, verbose,
+                        &designed_seq);
+    if (verbose) {
+        printf("seq    = %s\n", designed_seq);
+    } else {
+        printf("%s", designed_seq);
+    }
+    free(designed_seq);
+    return status;
 }

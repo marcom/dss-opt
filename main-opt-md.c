@@ -85,14 +85,14 @@ run_md(char *vienna, char *seq_constraints_hard,
        uint nsteps, uint nprint, uint ncool, uint npur,
        double timestep, double T_start, double kpi, double kpa, double kneg,
        double khet, uint het_window, double kpur_end,
-       bool do_exp_cool, bool do_movie_output)
+       bool do_exp_cool, bool do_movie_output, bool verbose,
+       char **designed_seq)
 {
     uint i, j, step, n, *hard_constraints, n_hard_constr;
     double G, Gnn, **p, **v, **dGdp, *mass, kb = 1, ndof,
         T, T_target, T_end = 0.1, cool_rate, kpur = 0, pur_rate,
         ekin, estart = 0;
     double **K_nj = helper_make_K_nj_alloc(ndim);
-    char *seq;
     size_t nfixed_bp;
     struct nn_inter *inter;
 
@@ -109,7 +109,6 @@ run_md(char *vienna, char *seq_constraints_hard,
     xmalloc2d_one_chunk(v, n, ndim);
     xmalloc2d_one_chunk(dGdp, n, ndim);
     mass = xmalloc(n * sizeof(*mass));
-    seq = xmalloc((n + 1) * sizeof(*seq));
 
     dary2d_set(n, ndim, p, 1.0 / ndim);
     dary_set(mass, n, 1.0);
@@ -122,42 +121,44 @@ run_md(char *vienna, char *seq_constraints_hard,
     /* only linear purification schedule */
     pur_rate = kpur_end / (nsteps - npur);
 
-    printf("target           = %s\n", vienna);
-    printf("n_hard_constr    = %u\n", n_hard_constr);
-    printf("hard constraints = %s\n", seq_constraints_hard);
-    printf("\n");
-    printf("timestep    = %f\n", timestep);
-    printf("T-start     = %f\n", T_start);
-    printf("T-end       = %f\n", T_end);
-    printf("cool_type   = %s\n", do_exp_cool ? "exponential" : "linear");
-    printf("cool_rate   = %f\n", cool_rate);
-    printf("het_window  = %u\n", het_window);
-    printf("kpi         = %f\n", kpi);
-    printf("kpa         = %f\n", kpa);
-    printf("kneg        = %f\n", kneg);
-    printf("khet        = %f\n", khet);
-    printf("kpur_end    = %f\n", kpur_end);
-    printf("pur_rate    = %f\n", pur_rate);
-    printf("\n");
-    printf("time-total  = %f\n", nsteps * timestep);
-    printf("time-print  = %f\n", nprint * timestep);
-    printf("time-cool   = %f\n", ncool  * timestep);
-    printf("time-pur    = %f\n", npur   * timestep);
-    printf("nsteps      = %u\n", nsteps);
-    printf("nprint      = %u\n", nprint);
-    printf("ncool       = %u\n", ncool);
-    printf("npur        = %u\n", npur);
-    printf("\n");
-    printf("ndof        = %f\n", ndof);
-    printf("\n");
+    if (verbose) {
+        printf("target           = %s\n", vienna);
+        printf("n_hard_constr    = %u\n", n_hard_constr);
+        printf("hard constraints = %s\n", seq_constraints_hard);
+        printf("\n");
+        printf("timestep    = %f\n", timestep);
+        printf("T-start     = %f\n", T_start);
+        printf("T-end       = %f\n", T_end);
+        printf("cool_type   = %s\n", do_exp_cool ? "exponential" : "linear");
+        printf("cool_rate   = %f\n", cool_rate);
+        printf("het_window  = %u\n", het_window);
+        printf("kpi         = %f\n", kpi);
+        printf("kpa         = %f\n", kpa);
+        printf("kneg        = %f\n", kneg);
+        printf("khet        = %f\n", khet);
+        printf("kpur_end    = %f\n", kpur_end);
+        printf("pur_rate    = %f\n", pur_rate);
+        printf("\n");
+        printf("time-total  = %f\n", nsteps * timestep);
+        printf("time-print  = %f\n", nprint * timestep);
+        printf("time-cool   = %f\n", ncool  * timestep);
+        printf("time-pur    = %f\n", npur   * timestep);
+        printf("nsteps      = %u\n", nsteps);
+        printf("nprint      = %u\n", nprint);
+        printf("ncool       = %u\n", ncool);
+        printf("npur        = %u\n", npur);
+        printf("\n");
+        printf("ndof        = %f\n", ndof);
+        printf("\n");
 
-    printf("    step        time            G_nn          Epot    "
-           "      Ekin         Etotal           T         delta E"
-           "      \"entropy\"         kpur\n");
-    printf("----------  ------------    ------------  ------------"
-           "  ------------  ------------  ------------  ------------"
-           "  ------------  ------------\n");
-    printf("START\n");
+        printf("    step        time            G_nn          Epot    "
+               "      Ekin         Etotal           T         delta E"
+               "      \"entropy\"         kpur\n");
+        printf("----------  ------------    ------------  ------------"
+               "  ------------  ------------  ------------  ------------"
+               "  ------------  ------------\n");
+        printf("START\n");
+    }
 
     T_target = T_start;
     for (step = 0; step <= nsteps; step++) {
@@ -194,23 +195,25 @@ run_md(char *vienna, char *seq_constraints_hard,
             T = md_calc_temperature(n, ndim, v, mass, kb, ndof);
 
             if (do_movie_output) {
-                print_for_movie(p, n, ndim, seq);
+                print_for_movie(p, n, ndim, *designed_seq);
             } else {
-                printf("%10u  %12.5f    % 12.3f  % 12.3f  % 12.3f  % 12.3f"
-                       "  % 12.3f  % 12.3f  % 12.3f  % 12.3f\n",
-                       step, step * timestep, Gnn, G, ekin, G + ekin, T,
-                       G + ekin - estart, calc_entropy(p, n, ndim), kpur);
+                if (verbose) {
+                    printf("%10u  %12.5f    % 12.3f  % 12.3f  % 12.3f  % 12.3f"
+                           "  % 12.3f  % 12.3f  % 12.3f  % 12.3f\n",
+                           step, step * timestep, Gnn, G, ekin, G + ekin, T,
+                           G + ekin - estart, calc_entropy(p, n, ndim), kpur);
+                }
             }
         }
 
         /* check for numerical explosion */
         if (system_is_exploded(p, n, ndim)) {
             printf("END\n\n");
-            show_bad_prob(p, n, ndim);
+            show_bad_prob(p, n, ndim, true);
             printf("\n");
             printf("vienna = %s\n", vienna);
-            pseq_to_str(p, n, ndim, seq);
-            printf("seq    = %s\n", seq);
+            pseq_to_str(p, n, ndim, *designed_seq);
+            printf("seq    = %s\n", *designed_seq);
             printf("\nstep = %u\n", step);
             printf("BOOOOOM --- system exploded\n");
             return EXIT_FAILURE;
@@ -243,27 +246,31 @@ run_md(char *vienna, char *seq_constraints_hard,
         /* thermostat */
         md_rescale_temperature(n, ndim, v, mass, kb, ndof, T_target);
     }
-    printf("END\n\n");
+    if (verbose) {
+        printf("END\n\n");
+    }
 
-    pseq_to_str(p, n, ndim, seq);
-    show_bad_prob(p, n, ndim);
-    show_bad_bp(seq, inter->pairs, n);
-    printf("before = %s\n", seq);
-    printf("fixing bad base pairs\n");
-    nfixed_bp = fix_bad_bp(seq, inter->pairs, n);
-    printf("nfixed_bp = %zu\n", nfixed_bp);
-    printf("\n");
+    pseq_to_str(p, n, ndim, *designed_seq);
+    show_bad_prob(p, n, ndim, verbose);
+    show_bad_bp(*designed_seq, inter->pairs, n);
+    if (verbose) {
+        printf("before = %s\n", *designed_seq);
+        printf("fixing bad base pairs\n");
+    }
+    nfixed_bp = fix_bad_bp(*designed_seq, inter->pairs, n);
+    if (verbose) {
+        printf("nfixed_bp = %zu\n", nfixed_bp);
+        printf("\n");
 
-    print_design_score_info_for_seq(inter, seq, n, ndim, K_nj, kpi, kpa,
-                                    kpur, kneg, khet, het_window);
+        print_design_score_info_for_seq(inter, *designed_seq, n, ndim, K_nj, kpi, kpa,
+                                        kpur, kneg, khet, het_window);
 
-    printf("vienna = %s\n", vienna);
-    printf("seq    = %s\n", seq);
+        printf("vienna = %s\n", vienna);
+    }
 
     free(K_nj);
     nn_inter_delete(inter);
     free(hard_constraints);
-    free(seq);
     free(p);
     free(v);
     free(dGdp);
@@ -291,6 +298,7 @@ usage(char *progname)
            "  --time-pur t              start purification at time t\n"
            "  --kpur-end k              ending value for kpur\n"
            "  --movie                   activate output that can be used to make a movie out of it\n"
+           "  --quiet                   minimise output\n"
            "  --seed s                  set seed of random number generator to s\n",
            progname);
 }
@@ -302,7 +310,7 @@ main(int argc, char **argv)
     char *vienna = NULL, *seq_constraints_hard = NULL;
 
     /* default settings */
-    bool do_exp_cool = false, do_movie_output = false;
+    bool do_exp_cool = false, do_movie_output = false, verbose = true;
     double timestep = 0.0015, T_start = 40.0,
         time_total = 50.0, time_print = 2.5, time_cool = 0.1 * time_total,
         time_pur = 0.8 * time_total;
@@ -332,6 +340,7 @@ main(int argc, char **argv)
             {"seq-constraints-hard",  required_argument, 0, 0},
             {"het-window",            required_argument, 0, 0},
             {"seed",                  required_argument, 0, 0},
+            {"quiet",                 no_argument,       0, 0},
             {0, 0, 0, 0} /* end marker */
         };
 
@@ -382,6 +391,8 @@ main(int argc, char **argv)
                 break;
             case 15: seed = atol(optarg);
                 break;
+            case 16: verbose = false;
+                break;
             default:
                 printf("ERROR in getopt parsing\n");
                 exit(EXIT_FAILURE);
@@ -430,14 +441,25 @@ main(int argc, char **argv)
 
 
     /* run */
-    printf("\n");
-    printf("optimisation by md with cooling\n");
-    printf("===============================\n");
-    printf("\n");
+    if (verbose) {
+        printf("\n");
+        printf("optimisation by md with cooling\n");
+        printf("===============================\n");
+        printf("\n");
 
-    printf("seed = %lu\n", seed);
+        printf("seed = %lu\n", seed);
+    }
     random_seed(seed);
-    return run_md(vienna, seq_constraints_hard, nsteps, nprint, ncool, npur,
-                  timestep, T_start, kpi, kpa, kneg, khet, het_window, kpur_end,
-                  do_exp_cool, do_movie_output);
+
+    char *designed_seq = xmalloc((strlen(vienna) + 1) * sizeof(*designed_seq));
+    int status = run_md(vienna, seq_constraints_hard, nsteps, nprint, ncool, npur,
+                        timestep, T_start, kpi, kpa, kneg, khet, het_window, kpur_end,
+                        do_exp_cool, do_movie_output, verbose, &designed_seq);
+    if (verbose) {
+        printf("seq    = %s\n", designed_seq);
+    } else {
+        printf("%s", designed_seq);
+    }
+    free(designed_seq);
+    return status;
 }
