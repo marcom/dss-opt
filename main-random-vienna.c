@@ -9,9 +9,9 @@ int main(int argc, char **argv)
     uint n, hpmin, *pairs;
     char *vienna;
 
-    if (argc != 3) {
+    if (argc != 3 && argc != 4) {
         printf("ERROR: wrong number of arguments\n"
-               "usage: %s length hpmin\n", argv[0]);
+               "usage: %s length hpmin [seed]\n", argv[0]);
         exit(EXIT_FAILURE);
     }
     n = atoi(argv[1]);
@@ -19,7 +19,12 @@ int main(int argc, char **argv)
     pairs = xmalloc(n * sizeof(*pairs));
     vienna = xmalloc((n + 1) * sizeof(*vienna));
 
-    random_seed_with_current_time();
+    if (argc == 4) {
+        random_seed(atoi(argv[3]));
+    } else {
+        random_seed_with_current_time();
+    }
+
     random_pairs(n, pairs, hpmin);
     xpairs_to_vienna(n, pairs, vienna);
     printf("%s\n", vienna);
