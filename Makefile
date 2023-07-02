@@ -21,7 +21,7 @@ PROGS_GSL  = opt-sd-gsl
 ALLPROGS   = $(PROGS_OPT) $(PROGS_MISC) $(PROGS_GSL)
 
 OBJS_COMMON = na.o nn_param.o $(OBJS_CTOOLS)
-OBJS_OPT    = nj_param.o dss.o helpers-for-main.o helpers-for-main-opt.o $(OBJS_MD)
+OBJS_OPT    = opt.o nj_param.o dss.o helpers-for-main.o helpers-for-main-opt.o $(OBJS_MD)
 OBJS_CTOOLS = ctools/dary.o ctools/libctools.o ctools/num_utils.o ctools/random.o
 OBJS_MD     = md/md.o
 ALLOBJS     = $(OBJS_COMMON) $(OBJS_OPT) $(OBJS_CTOOLS) $(OBJS_MD)
