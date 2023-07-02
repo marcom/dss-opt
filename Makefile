@@ -37,7 +37,7 @@ lib: $(LIBDSSOPT)
 clean:
 	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
 
-check:
+check: all
 	./tests/test-executables.bash
 # aliases for check
 test: check
