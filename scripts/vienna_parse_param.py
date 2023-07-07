@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 # developed for ViennaRNA-1.7.x/vienna1{3,7}.par
 # TODO:
