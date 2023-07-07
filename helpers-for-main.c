@@ -64,15 +64,16 @@ is_bad_bp(char *seq, uint i, uint j)
 
 /* TODO: list of permissible pairs is hardcoded */
 void
-show_bad_bp(char *seq, uint *pairs, size_t n)
+show_bad_bp(char *seq, uint *pairs, size_t n, bool verbose)
 {
     size_t i;
     for (i = 0; i < n; i++) {
         if (pairs[i] == NA_UNPAIRED || i > pairs[i])
             continue;
-        if (is_bad_bp(seq, i, pairs[i]))
+        if (verbose && is_bad_bp(seq, i, pairs[i])) {
             printf("bad bp: %zu %u: %c%c\n", i, pairs[i],
                    seq[i], seq[pairs[i]]);
+        }
     }
 }
 

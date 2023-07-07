@@ -252,7 +252,7 @@ run_md(char *vienna, char *seq_constraints_hard,
 
     pseq_to_str(p, n, ndim, *designed_seq);
     show_bad_prob(p, n, ndim, verbose);
-    show_bad_bp(*designed_seq, inter->pairs, n);
+    show_bad_bp(*designed_seq, inter->pairs, n, verbose);
     if (verbose) {
         printf("before = %s\n", *designed_seq);
         printf("fixing bad base pairs\n");
@@ -443,7 +443,7 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
        move to common lib function */
     pseq_to_str(p, n, ndim, *designed_seq);
     show_bad_prob(p, n, ndim, verbose);
-    show_bad_bp(*designed_seq, inter->pairs, n);
+    show_bad_bp(*designed_seq, inter->pairs, n, verbose);
     if (verbose) {
         printf("before = %s\n", *designed_seq);
         printf("fixing bad base pairs\n");
