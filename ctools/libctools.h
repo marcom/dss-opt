@@ -3,8 +3,9 @@
 
 #include <stdlib.h>
 
-/* TODO: some not needed for C99/C++ ?, maybe should be defined
-   conditionally */
+/* TODO: some typedefs not needed for C99/C++ ?, maybe should be
+   defined conditionally */
+
 typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;
