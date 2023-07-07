@@ -9,6 +9,8 @@ static const uint ndim = 4;
 uint x_parse_seq_constraints_hard(uint n, uint *hard, char *constraint_str,
                                   uint *pairs);
 
+/* run sequence optimisation by dynamics in sequence space (dynamical
+   simulated annealing) */
 int run_md(char *vienna, char *seq_constraints_hard,
            uint nsteps, uint nprint, uint ncool, uint npur,
            double timestep, double T_start, double kpi, double kpa, double kneg,
@@ -16,6 +18,7 @@ int run_md(char *vienna, char *seq_constraints_hard,
            bool do_exp_cool, bool do_movie_output, bool verbose,
            char **designed_seq);
 
+/* run sequence optimisation by steepest descent */
 int run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
            double kpi, double kpa, double kpur, double kneg, double khet,
            uint het_window, bool do_movie_output, bool verbose,

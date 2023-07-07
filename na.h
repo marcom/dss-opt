@@ -19,26 +19,6 @@
 
 extern const uint NA_2BASES_TO_PAIRTYPE[4][4];
 
-/*
-typedef struct {
-    uint    nalpha;
-    char    *seq_to_char;
-    uint8_t *char_to_seq;
-} Alphabet;
-
-typedef struct {
-    Alphabet *alpha;
-    size_t   len;
-    uint8_t  *seq;
-} Seq;
-
-typedef struct {
-    Alphabet *alpha;
-    size_t   len;
-    double   **pseq;
-} Pseq;
-*/
-
 struct nn_stack {
     /* TODO: only i1, j1 needed (can then be called i and j) */
     uint i1, j1, i2, j2;
