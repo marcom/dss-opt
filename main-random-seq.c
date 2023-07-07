@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     }
 
     xvienna_to_pairs(n, vienna, pairs);
-    random_seq(n, pairs, useq);
+    random_useq(n, pairs, useq);
     /* TODO: move this to useq_to_str function */
     for (i = 0; i < n; i++)
         printf("%c", BASE_NAMES[useq[i]]);

@@ -69,7 +69,7 @@ void               find_interactions(struct nn_inter *inter);
 void               print_interactions(const struct nn_inter *inter);
 
 void     random_pairs(uint n, uint *pairs, uint hpmin);
-void     random_seq(uint n, const uint *pairs, uint *seq);
+void     random_useq(uint n, const uint *pairs, uint *useq);
 
 
 

@@ -499,17 +499,17 @@ helper_random_pairs_iter(uint *pairs, uint i, uint j, uint hpmin)
 /* generate a random sequence compatible with a given secondary
    structure */
 void
-random_seq(uint n, const uint *pairs, uint *seq)
+random_useq(uint n, const uint *pairs, uint *useq)
 {
     uint i, bp;
     for (i = 0; i < n; i++) {
         if (pairs[i] == NA_UNPAIRED) {
-            seq[i] = random_uint(0, NA_NBASES - 1);
+            useq[i] = random_uint(0, NA_NBASES - 1);
         } else if (i < pairs[i]) {
             /* we found i of the pair (i, pairs[i]) */
             bp = random_uint(0, NA_NBASEPAIRS - 1);
-            seq[i] = NA_BASEPAIR_TO_BASES[bp][0];
-            seq[pairs[i]] = NA_BASEPAIR_TO_BASES[bp][1];
+            useq[i] = NA_BASEPAIR_TO_BASES[bp][0];
+            useq[pairs[i]] = NA_BASEPAIR_TO_BASES[bp][1];
         }
     }
 }
