@@ -19,7 +19,7 @@ xmalloc(size_t size)
 void **
 xmalloc_utriag(size_t size, int diag)
 {
-    
+
 }
 #endif
 

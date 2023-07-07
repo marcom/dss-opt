@@ -83,8 +83,8 @@ integrate_from_pseq_to_pseq(struct nn_inter *inter, uint n,
             if (p2[i][j2] == 1)
                 break;
 
-        /* TODO: two ways to move between sequences 
-         1. change both p[i][j1], p[i][j2] simultaneously 
+        /* TODO: two ways to move between sequences
+         1. change both p[i][j1], p[i][j2] simultaneously
             good: works, bad: needs many integration steps
          2. first move p[i][j1], afterwards move p[i][j2] up
             good: fast, bad: doesn't work with het term as it blows up if p[i] = 0 */

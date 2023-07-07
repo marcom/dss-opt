@@ -144,7 +144,7 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
         }
         for (j = 0; j < ndim; j++)
             p[i][j] /= tmp;
-    }        
+    }
 
     if (verbose) {
         printf("target     = %s\n", vienna);

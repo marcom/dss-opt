@@ -276,7 +276,7 @@ dss_calc_U_het(double **p, uint n, uint ndim, double khet,
             /* U += khet / window_size * p[i]^T * p[j] / ( |p[i]| * |p[j]| )
                or
                U += khet / window_size * cos(p[i], p[j]) */
-            
+
             /* TODO: could just do U += (p[i] - p[j])^2 */
             d = 0;
             pi_len2 = 0;
@@ -339,7 +339,7 @@ dss_calc_gradU_het(double **p, uint n, uint ndim, double khet,
 
 
 #if 0
-/* idea: correct the gradients so that probability is conserved 
+/* idea: correct the gradients so that probability is conserved
    problem might be if individual components are pushed below 0 */
 void
 dss_correct_gradU(uint n, uint ndim, uint *pairs, double **gradU)
