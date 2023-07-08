@@ -38,16 +38,22 @@ clean:
 	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
 	make -C unittest clean
 
-check: all
+check: all unittest
+	@echo "#######################"
+	@echo "# Running program tests"
+	@echo "#######################"
 	./tests/test-executables.bash
 
-check-valgrind: all
+check-valgrind: all unittest-valgrind
+	@echo "#####################################"
+	@echo "# Running program tests with valgrind"
+	@echo "#####################################"
 	./tests/test-executables.bash --valgrind
 
-unittest:
+unittest: lib
 	make -C unittest check
 
-unittest-valgrind:
+unittest-valgrind: lib
 	make -C unittest check-valgrind
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)

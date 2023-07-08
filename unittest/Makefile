@@ -58,9 +58,15 @@ done
 endef
 
 check: $(TEST_PROGRAMS)
+	@echo "###################"
+	@echo "# Running unittests"
+	@echo "###################"
 	$(call run_all_tests)
 
 check-valgrind: $(TEST_PROGRAMS)
+	@echo "#################################"
+	@echo "# Running unittests with valgrind"
+	@echo "#################################"
 	$(call run_all_tests,$(VALGRIND))
 
 clean:
