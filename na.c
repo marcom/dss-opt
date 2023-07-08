@@ -58,10 +58,22 @@ const int NN_NON_GC_PENALTY_FOR_BASES[][4] = {
   pairlist:         8 7 6 . . . 2 1 0   -- here the dot stands for NA_UNPAIRED
 */
 
-/* transform a structure given in vienna bracket notation to a
-   pairlist */
+/* Transform a structure given in vienna bracket notation to a
+   pairlist, exiting on failure. */
 void
 xvienna_to_pairs(uint n, const char *vienna, uint *pairs)
+{
+    bool verbose = true;
+    int err = vienna_to_pairs(n, vienna, verbose, pairs);
+    if (err != EXIT_SUCCESS) {
+        exit(EXIT_FAILURE);
+    }
+}
+
+/* Transform a structure given in vienna bracket notation to a
+   pairlist. */
+int
+vienna_to_pairs(uint n, const char *vienna, bool verbose, uint *pairs)
 {
     uint i, j;
     uint *stack, idx_stack = 0; /* idx_stack is the next free slot */
@@ -78,28 +90,35 @@ xvienna_to_pairs(uint n, const char *vienna, uint *pairs)
                 pairs[i] = j;
                 pairs[j] = i;
             } else {
-                printf("ERROR: too many closing parentheses in vienna"
-                       " string %s\n", vienna);
-                exit(EXIT_FAILURE);
+                if (verbose) {
+                    printf("ERROR: too many closing parentheses in vienna"
+                           " string %s\n", vienna);
+                }
+                return EXIT_FAILURE;
             }
             break;
         case '.':
             pairs[i] = NA_UNPAIRED;
             break;
         default:
-            printf("ERROR: illegal character '%c' in vienna string '%s'\n",
-                   vienna[i], vienna);
-            exit(EXIT_FAILURE);
+            if (verbose) {
+                printf("ERROR: illegal character '%c' in vienna string '%s'\n",
+                       vienna[i], vienna);
+            }
+            return EXIT_FAILURE;
             break;
         }
     }
     if (idx_stack != 0) {
-        printf("ERROR: not enough closing parentheses in vienna string %s\n",
-               vienna);
-        exit(EXIT_FAILURE);
+        if (verbose) {
+            printf("ERROR: not enough closing parentheses in vienna string %s\n",
+                   vienna);
+        }
+        return EXIT_FAILURE;
     }
 
     free(stack);
+    return EXIT_SUCCESS;
 }
 
 /* pairlist is assumed to be valid and to correspond to a
