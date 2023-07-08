@@ -5,17 +5,37 @@ set -o nounset
 
 exedir="$(dirname $0)/.."
 
+print_usage() {
+    echo "usage: $0 [--valgrind]"
+}
+
+if [[ $# > 1 ]]; then
+    print_usage
+    exit 1
+fi
+
+valgrind=
+if [[ $# > 0 ]]; then
+    if [[ "$1" == "--valgrind" ]]; then
+        valgrind="valgrind -q"
+        shift 1
+    else
+        print_usage
+        exit 1
+    fi
+fi
+
 # main programs
-opt_md="$exedir"/opt-md
-opt_sd="$exedir"/opt-sd
-opt_sd_gsl="$exedir"/opt-sd-gsl
+opt_md="$valgrind $exedir"/opt-md
+opt_sd="$valgrind $exedir"/opt-sd
+opt_sd_gsl="$valgrind $exedir"/opt-sd-gsl
 # helper programs
-eval_dGdp="$exedir"/eval-dGdp
-eval_pseq="$exedir"/eval-pseq
-eval_score="$exedir"/eval-score
-eval_useq="$exedir"/eval-useq
-random_seq="$exedir"/random-seq
-random_vienna="$exedir"/random-vienna
+eval_dGdp="$valgrind $exedir"/eval-dGdp
+eval_pseq="$valgrind $exedir"/eval-pseq
+eval_score="$valgrind $exedir"/eval-score
+eval_useq="$valgrind $exedir"/eval-useq
+random_seq="$valgrind $exedir"/random-seq
+random_vienna="$valgrind $exedir"/random-vienna
 
 test_command() {
     test_name=$1

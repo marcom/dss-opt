@@ -1,4 +1,4 @@
-.PHONY: all lib check test tests clean
+.PHONY: all lib clean check check-valgrind
 
 CC      = cc
 CFLAGS += -std=c99
@@ -39,9 +39,9 @@ clean:
 
 check: all
 	./tests/test-executables.bash
-# aliases for check
-test: check
-tests: check
+
+check-valgrind: all
+	./tests/test-executables.bash --valgrind
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
