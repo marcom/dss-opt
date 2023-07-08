@@ -1,4 +1,4 @@
-.PHONY: all lib clean check check-valgrind
+.PHONY: all lib clean check check-valgrind unittest unittest-valgrind
 
 CC      = cc
 CFLAGS += -std=c99
@@ -36,12 +36,19 @@ lib: $(LIBDSSOPT)
 
 clean:
 	rm -f $(ALLPROGS) $(ALLOBJS) $(LIBDSSOPT)
+	make -C unittest clean
 
 check: all
 	./tests/test-executables.bash
 
 check-valgrind: all
 	./tests/test-executables.bash --valgrind
+
+unittest:
+	make -C unittest check
+
+unittest-valgrind:
+	make -C unittest check-valgrind
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
