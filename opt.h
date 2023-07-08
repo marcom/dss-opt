@@ -6,6 +6,13 @@
 
 #define DEFAULT_DSSOPT_ndim 4u
 
+#define DEFAULT_DSSOPT_kpi 50000.0
+#define DEFAULT_DSSOPT_kpa 50000.0
+#define DEFAULT_DSSOPT_kneg 1.0
+#define DEFAULT_DSSOPT_kpur 0.0
+#define DEFAULT_DSSOPT_khet 10.0
+#define DEFAULT_DSSOPT_het_window 3u
+
 uint x_parse_seq_constraints_hard(uint n, uint *hard, char *constraint_str,
                                   uint *pairs);
 

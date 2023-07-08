@@ -1,4 +1,5 @@
 #include "dss.h"
+#include "opt.h"
 #include "helpers-for-main-opt.h"
 #include <stdio.h>
 
@@ -16,12 +17,12 @@ void
 set_dss_force_constants_defaults(double *kpi, double *kpa, double *kneg,
                                  double *kpur, double *khet, uint *het_window)
 {
-    *kpi  = 50000.0;
-    *kpa  = 50000.0;
-    *kneg = 1.0;
-    *kpur = 0.0;
-    *khet = 10.0;
-    *het_window = 3;
+    *kpi  = DEFAULT_DSSOPT_kpi;
+    *kpa  = DEFAULT_DSSOPT_kpa;
+    *kneg = DEFAULT_DSSOPT_kneg;
+    *kpur = DEFAULT_DSSOPT_kpur;
+    *khet = DEFAULT_DSSOPT_khet;
+    *het_window = DEFAULT_DSSOPT_het_window;
 }
 
 void
