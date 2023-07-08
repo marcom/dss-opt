@@ -89,6 +89,7 @@ run_md(char *vienna, char *seq_constraints_hard,
        char **designed_seq)
 {
     uint i, j, step, n, *hard_constraints, n_hard_constr;
+    uint ndim = DEFAULT_DSSOPT_ndim;
     double G, Gnn, **p, **v, **dGdp, *mass, kb = 1, ndof,
         T, T_target, T_end = 0.1, cool_rate, kpur = 0, pur_rate,
         ekin, estart = 0;
@@ -104,7 +105,8 @@ run_md(char *vienna, char *seq_constraints_hard,
     hard_constraints = xmalloc(n * sizeof(*hard_constraints));
     n_hard_constr = x_parse_seq_constraints_hard(n, hard_constraints, seq_constraints_hard, inter->pairs);
 
-    ndof = n * ndim - (n_hard_constr * ndim);    /* TODO: or ndof = n * (ndim - 1); ? */
+    /* TODO: or ndof = n * (ndim - 1) - (n_hard_constr * ndim); ? */
+    ndof = n * ndim - (n_hard_constr * ndim);
     xmalloc2d_one_chunk(p, n, ndim);
     xmalloc2d_one_chunk(v, n, ndim);
     xmalloc2d_one_chunk(dGdp, n, ndim);
@@ -286,6 +288,7 @@ run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
        char **designed_seq)
 {
     uint i, j, step, n;
+    uint ndim = DEFAULT_DSSOPT_ndim;
     double G, Gnn, **p, **dGdp, Gstart = 0, Gold, delta, tmp;
     double scale = 0.01, scale_min = 1e-8,
         scale_decrease = 0.5, scale_increase = 1.05;

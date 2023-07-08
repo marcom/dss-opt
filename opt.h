@@ -4,7 +4,7 @@
 #include "ctools/libctools.h"
 #include <stdbool.h>
 
-static const uint ndim = 4;
+#define DEFAULT_DSSOPT_ndim 4u
 
 uint x_parse_seq_constraints_hard(uint n, uint *hard, char *constraint_str,
                                   uint *pairs);
