@@ -19,8 +19,8 @@
 #include <string.h>
 
 uint
-x_parse_seq_constraints_hard(uint n, uint *hard, char *constraint_str,
-                             uint *pairs)
+x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
+                             const uint *pairs)
 {
     uint i, j, n_constr = 0;
     char ci, cj;
@@ -81,12 +81,12 @@ x_parse_seq_constraints_hard(uint n, uint *hard, char *constraint_str,
 /* optimisation by dynamical simulated annealing, i.e. dynamics with a
    cooling scheme */
 int
-run_md(char *vienna, char *seq_constraints_hard,
+run_md(const char *vienna, const char *seq_constraints_hard,
        uint nsteps, uint nprint, uint ncool, uint npur,
        double timestep, double T_start, double kpi, double kpa, double kneg,
        double khet, uint het_window, double kpur_end,
        bool do_exp_cool, bool do_movie_output, bool verbose,
-       char **designed_seq)
+       char ** const designed_seq)
 {
     uint i, j, step, n, *hard_constraints, n_hard_constr;
     uint ndim = DEFAULT_DSSOPT_ndim;
@@ -282,10 +282,10 @@ run_md(char *vienna, char *seq_constraints_hard,
 
 /* steepest descent optimisation */
 int
-run_sd(char *vienna, uint maxsteps, uint nprint, double wiggle,
+run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
        double kpi, double kpa, double kpur, double kneg, double khet,
        uint het_window, bool do_movie_output, bool verbose,
-       char **designed_seq)
+       char ** const designed_seq)
 {
     uint i, j, step, n;
     uint ndim = DEFAULT_DSSOPT_ndim;
