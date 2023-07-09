@@ -9,6 +9,7 @@ CC      = cc
 CFLAGS += -std=c99
 CFLAGS += -O2
 CFLAGS += -pedantic -Wall -Wextra -Wshadow
+CFLAGS += -Werror
 CFLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-absolute-value
 CFLAGS += -Wstrict-prototypes
 
