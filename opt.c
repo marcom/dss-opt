@@ -22,6 +22,22 @@ uint
 x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
                              const uint *pairs)
 {
+    bool verbose = true;
+    uint n_hard = 0;
+    int retcode = parse_seq_constraints_hard(n, hard, &n_hard, constraint_str,
+                                             verbose, pairs);
+    if (retcode == EXIT_FAILURE) {
+        exit(EXIT_FAILURE);
+    }
+    return n_hard;
+}
+
+int
+parse_seq_constraints_hard(uint n, uint *hard, uint *n_hard,
+                           const char *constraint_str, bool verbose,
+                           const uint *pairs)
+
+{
     uint i, j, n_constr = 0;
     char ci, cj;
     if (! constraint_str) {
@@ -51,9 +67,11 @@ x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
             hard[i] = NA_BASE_U;
             break;
         default:
-            printf("ERROR: illegal character '%c' in hard sequence"
-                   " constraints\n", ci);
-            exit(EXIT_FAILURE);
+            if (verbose) {
+                printf("ERROR: illegal character '%c' in hard sequence"
+                       " constraints\n", ci);
+            }
+            return EXIT_FAILURE;
             break;
         }
         /* check that the constraint is satisfiable with target
@@ -69,13 +87,16 @@ x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
             if (NA_2BASES_TO_PAIRTYPE[hard[j]][hard[i]] == NA_UNDEF) {
                 /* TODO: factor out this function is_legal_base_pair() */
                 /* this base pair is unsatisfiable */
-                printf("ERROR: illegal base pair (%c%u, %c%u) cannot be satisfied.\n",
-                       cj, j, ci, i);
-                exit(EXIT_FAILURE);
+                if (verbose) {
+                    printf("ERROR: illegal base pair (%c%u, %c%u) cannot be satisfied.\n",
+                           cj, j, ci, i);
+                }
+                return EXIT_FAILURE;
             }
         }
     }
-    return n_constr;
+    *n_hard = n_constr;
+    return EXIT_SUCCESS;
 }
 
 /* optimisation by dynamical simulated annealing, i.e. dynamics with a

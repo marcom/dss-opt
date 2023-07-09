@@ -16,6 +16,10 @@
 uint x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
                                   const uint *pairs);
 
+int parse_seq_constraints_hard(uint n, uint *hard, uint *n_hard,
+                               const char *constraint_str, bool verbose,
+                               const uint *pairs);
+
 /* run sequence optimisation by dynamics in sequence space (dynamical
    simulated annealing) */
 int run_md(const char *vienna, const char *seq_constraints_hard,
