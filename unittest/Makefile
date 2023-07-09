@@ -47,28 +47,17 @@ $(TEST_PROGRAMS): run-%: $(LIBDSSOPT) %.o $(UNITY_OBJ)
 	@echo -n "[COMPILE]  "
 	$(CC) $(CFLAGS) -c $< -o $@
 
-define run_all_tests
-@echo
-@for file in run-* ; do \
-    if [ -x "$$file" ]; then \
-        echo "Running $$file"; \
-        $(1) ./$$file; \
-        echo ""; \
-    fi \
-done
-endef
-
 check: $(TEST_PROGRAMS)
 	@echo "###################"
 	@echo "# Running unittests"
 	@echo "###################"
-	$(call run_all_tests)
+	./all-test-runner.bash
 
 check-valgrind: $(TEST_PROGRAMS)
 	@echo "#################################"
 	@echo "# Running unittests with valgrind"
 	@echo "#################################"
-	$(call run_all_tests,$(VALGRIND))
+	./all-test-runner.bash $(VALGRIND)
 
 clean:
 	rm -f $(TEST_PROGRAMS) $(OBJS)
