@@ -28,7 +28,7 @@ for testprog in ./run-*; do
     # The `-z` option outputs null bytes, which we need for multi-line
     # grepping, so the `tr` call translates them back.
     result=$(echo "$out" | grep -Pzo '\n\-\-\-\-\-\-+\n\d+ Tests \d+ Failures \d+ Ignored' | tr '\0' '\n')
-    echo "result = $result"
+    # echo "result = $result"
     # Count tests and failures, assumes UNITY_OUTPUT_COLOR is not enabled.
     num_tests=$(echo "$result" | grep -oP '\d+(?= Tests)')
     num_failures=$(echo "$result" | grep -oP '\d+(?= Failures)')
