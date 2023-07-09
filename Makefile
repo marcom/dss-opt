@@ -31,7 +31,7 @@ LIB_FILE_EXT = so
 LIBDSSOPT    = libdssopt.$(LIB_FILE_EXT)
 ALLOBJS_SRC := $(subst .o,.c, $(ALLOBJS))
 
-all: $(ALLPROGS)
+all: $(ALLPROGS) lib
 
 lib: $(LIBDSSOPT)
 
