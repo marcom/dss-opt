@@ -68,6 +68,8 @@ char *   xpairs_to_vienna(uint n, const uint *pairs, char *vienna);
 void     xstr_to_useq(uint n, const char *str, uint *useq);
 void     xstr_to_pseq(uint n, uint ndim, const char *str, double **p);
 void     pseq_to_str(double **p, uint n, uint ndim, char *str);
+void     xuseq_to_str(uint n, const uint *useq, char *str);
+int      useq_to_str(uint n, const uint *useq, bool verbose, char *str);
 
 struct nn_inter *  nn_inter_xnew(uint n);
 void               nn_inter_delete(struct nn_inter *inter);

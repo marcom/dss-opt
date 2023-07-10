@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
     uint i, n, *pairs, *useq;
-    char *vienna;
+    char *vienna, *str;
 
     if (argc != 2 && argc != 3) {
         printf("ERROR: wrong number of arguments\n"
@@ -18,6 +18,7 @@ int main(int argc, char **argv)
     n = strlen(vienna);
     pairs = xmalloc(n * sizeof(*pairs));
     useq = xmalloc(n * sizeof(*useq));
+    str = xmalloc((n + 1) * sizeof(*str));
 
     if (argc == 3) {
         random_seed(atoi(argv[2]));
@@ -27,11 +28,10 @@ int main(int argc, char **argv)
 
     xvienna_to_pairs(n, vienna, pairs);
     random_useq(n, pairs, useq);
-    /* TODO: move this to useq_to_str function */
-    for (i = 0; i < n; i++)
-        printf("%c", NA_BASE_NAMES[useq[i]]);
-    printf("\n");
+    xuseq_to_str(n, useq, str);
+    printf("%s\n", str);
 
+    free(str);
     free(pairs);
     free(useq);
     return EXIT_SUCCESS;

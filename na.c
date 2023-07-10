@@ -244,6 +244,37 @@ xstr_to_pseq(uint n, uint ndim, const char *str, double **p)
     }
 }
 
+/* translate from uint sequence representation to string, exiting on
+   errors */
+void
+xuseq_to_str(uint n, const uint *useq, char *str)
+{
+    bool verbose = true;
+    int retcode = useq_to_str(n, useq, verbose, str);
+    if (retcode != EXIT_SUCCESS) {
+        exit(EXIT_FAILURE);
+    }
+}
+
+/* translate from uint sequence representation to string, return
+   EXIT_SUCCESS on success */
+int
+useq_to_str(uint n, const uint *useq, bool verbose, char *str)
+{
+    uint i;
+    str[n] = '\0';
+    for (i = 0; i < n; i++) {
+        if (useq[i] >= NA_NBASES) {
+            if (verbose) {
+                printf("ERROR: illegal base at position %u, base id = %u\n", i, useq[i]);
+            }
+            return EXIT_FAILURE;
+        }
+        str[i] = NA_BASE_NAMES[useq[i]];
+    }
+    return EXIT_SUCCESS;
+}
+
 void
 nn_multiloop_xalloc(struct nn_multiloop *ml, uint nstems, uint ndangle5,
                     uint ndangle3)
