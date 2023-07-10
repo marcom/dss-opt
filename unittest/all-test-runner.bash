@@ -22,6 +22,7 @@ total_failures=0
 total_ignored=0
 
 for testprog in ./run-*; do
+    echo
     echo "$testprog"
     out=$($@ "$testprog")
     echo "$out"
