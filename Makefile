@@ -58,13 +58,17 @@ unittest-valgrind: lib
 	make -C unittest check-valgrind
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
+	@echo -n "[LINK     ]  "
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(PROGS_OPT): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
+	@echo -n "[LINK     ]  "
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(PROGS_GSL): %: main-%.c $(OBJS_COMMON) $(OBJS_OPT)
+	@echo -n "[LINK     ]  "
 	$(CC) $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS_GSL)
 
 $(LIBDSSOPT): $(ALLOBJS_SRC)
+	@echo -n "[SHAREDLIB]  "
 	$(CC) -shared -fPIC $(CPPFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGS)
