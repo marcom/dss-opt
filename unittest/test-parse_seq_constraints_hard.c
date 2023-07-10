@@ -139,6 +139,32 @@ void test_parse_seq_constraints_hard_mixed(void) {
     TEST_ASSERT_EQUAL_INT(EXIT_SUCCESS, retcode);
 }
 
+void test_parse_seq_constraints_hard_fail_illegal_char(void) {
+    bool verbose = true;
+    char *constraint_str = "NNNNXNNNN";
+    //                      (((...)))
+    uint pairs[] = {8, 7, 6, UP, UP, UP, 2, 1, 0};
+    uint hard[] = {-42, -42, -42, -42, -42, -42, -42, -42, -42};
+    uint n = strlen(constraint_str);
+    uint n_hard = -42 * 5;
+    uint retcode = parse_seq_constraints_hard(n, hard, &n_hard,
+                                              constraint_str, verbose, pairs);
+    TEST_ASSERT_EQUAL_INT(EXIT_FAILURE, retcode);
+}
+
+void test_parse_seq_constraints_hard_fail_impossible_basepair(void) {
+    bool verbose = true;
+    char *constraint_str = "NNGNNNGNN";
+    //                      (((...)))
+    uint pairs[] = {8, 7, 6, UP, UP, UP, 2, 1, 0};
+    uint hard[] = {-42, -42, -42, -42, -42, -42, -42, -42, -42};
+    uint n = strlen(constraint_str);
+    uint n_hard = -42 * 5;
+    uint retcode = parse_seq_constraints_hard(n, hard, &n_hard,
+                                              constraint_str, verbose, pairs);
+    TEST_ASSERT_EQUAL_INT(EXIT_FAILURE, retcode);
+}
+
 
 int main(void)
 {
@@ -153,6 +179,8 @@ int main(void)
     RUN_TEST(test_parse_seq_constraints_hard_unpaired);
     RUN_TEST(test_parse_seq_constraints_hard_basepaired);
     RUN_TEST(test_parse_seq_constraints_hard_mixed);
+    RUN_TEST(test_parse_seq_constraints_hard_fail_illegal_char);
+    RUN_TEST(test_parse_seq_constraints_hard_fail_impossible_basepair);
 
     return UNITY_END();
 }
