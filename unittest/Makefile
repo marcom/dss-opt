@@ -1,9 +1,6 @@
 # GNU Makefile
-# - wildcard
-# - patsubst
-# - functions
 
-.PHONY: all clean check
+.PHONY: all clean check libdssopt
 
 CC      = cc
 CFLAGS += -std=c99
@@ -18,7 +15,6 @@ VALGRIND := valgrind -q
 DSS_OPT_DIR := ..
 CFLAGS += -I$(DSS_OPT_DIR)
 LDFLAGS = -L$(DSS_OPT_DIR) -Wl,-rpath=$(DSS_OPT_DIR) -Wl,--enable-new-dtags -ldssopt
-LIBDSSOPT = $(DSS_OPT_DIR)/libdssopt.so
 
 TEST_PROGRAMS_SRC = $(wildcard test-*.c)
 TEST_PROGRAMS = $(patsubst %.c,run-%,$(TEST_PROGRAMS_SRC))
@@ -36,12 +32,12 @@ all: $(TEST_PROGRAMS) check
 Unity:
 	git clone --depth 1 https://github.com/ThrowTheSwitch/Unity/
 
-$(LIBDSSOPT):
+libdssopt:
 	make -C .. lib
 
-$(TEST_PROGRAMS): run-%: $(LIBDSSOPT) %.o $(UNITY_OBJ)
+$(TEST_PROGRAMS): run-%: libdssopt %.o $(UNITY_OBJ)
 	@echo -n "[LINK   ]  "
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(filter-out libdssopt,$^) -o $@ $(LDFLAGS)
 
 %.o: %.c Unity
 	@echo -n "[COMPILE]  "
