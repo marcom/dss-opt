@@ -121,26 +121,71 @@ vienna_to_pairs(uint n, const char *vienna, bool verbose, uint *pairs)
     return EXIT_SUCCESS;
 }
 
-/* pairlist is assumed to be valid and to correspond to a
-   non-pseudoknotted secondary structure */
+/* Convert pairlist `pairs` of length `n` to a secondary structure
+   `vienna` in dot-bracket notation.
+
+   The pairlist is assumed to be valid and of a non-pseudoknotted
+   secondary structure, i.e. only one type of bracket pairs `()` is
+   needed to write the structrue.
+
+   Output parameter: the generated secondary structure is written to
+   `vienna`.
+
+   Return value: Same as `vienna`. */
 char *
 xpairs_to_vienna(uint n, const uint *pairs, char *vienna)
 {
+    bool verbose = true;
+    int retcode = pairs_to_vienna(n, pairs, verbose, vienna);
+    if (retcode == EXIT_FAILURE) {
+        exit(EXIT_FAILURE);
+    }
+    return vienna;
+}
+
+/* Convert pairlist `pairs` of length `n` to a secondary structure
+   `vienna` in dot-bracket notation.
+
+   The pairlist is assumed to be valid and of a non-pseudoknotted
+   secondary structure, i.e. only one type of bracket pairs `()` is
+   needed to write the structrue.  If `verbose` is set to `true`,
+   errors during conversion are printed to stdout.
+
+   Output parameter: the generated secondary structure is written to
+   `vienna`.
+
+   Return value: `EXIT_FAILURE` on failure and `EXIT_SUCCESS` on
+   success. */
+int
+pairs_to_vienna(uint n, const uint *pairs, bool verbose, char *vienna)
+{
     uint i;
+    vienna[n] = '\0';
     for (i = 0; i < n; i++) {
-        if (pairs[i] == NA_UNPAIRED)
+        if (pairs[i] == NA_UNPAIRED) {
             vienna[i] = '.';
-        else if (i < pairs[i])
-            vienna[i] = '(';
-        else if (i > pairs[i])
-            vienna[i] = ')';
-        else {
-            printf("ERROR: illegal entry in pairlist\n");
-            exit(EXIT_FAILURE);
+        } else {
+            if (i != pairs[pairs[i]]) {
+                if (verbose) {
+                    printf("ERROR: illegal pairlist entry, pairs[%u] == %u, pairs[%u] == %u\n",
+                           i, pairs[i], pairs[i], pairs[pairs[i]]);
+                }
+                return EXIT_FAILURE;
+            }
+            if (i < pairs[i]) {
+                vienna[i] = '(';
+            } else if (i > pairs[i]) {
+                vienna[i] = ')';
+            } else {
+                /* i == pairs[i] */
+                if (verbose) {
+                    printf("ERROR: illegal entry in pairlist, base %u paired to itself\n", i);
+                }
+                return EXIT_FAILURE;
+            }
         }
     }
-    vienna[n] = '\0';
-    return vienna;
+    return EXIT_SUCCESS;
 }
 
 /* translate an ASCII character to its internal representation */
