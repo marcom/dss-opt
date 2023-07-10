@@ -4,9 +4,6 @@
 #include "na.h"
 #include "ctools/random.h"
 
-/* TODO: take this from a header file */
-const char BASE_NAMES[] = { 'A', 'C', 'G', 'U' };
-
 int main(int argc, char **argv)
 {
     uint i, n, *pairs, *useq;
@@ -32,7 +29,7 @@ int main(int argc, char **argv)
     random_useq(n, pairs, useq);
     /* TODO: move this to useq_to_str function */
     for (i = 0; i < n; i++)
-        printf("%c", BASE_NAMES[useq[i]]);
+        printf("%c", NA_BASE_NAMES[useq[i]]);
     printf("\n");
 
     free(pairs);

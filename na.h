@@ -17,6 +17,10 @@
 #define NA_BASE_G   ((uint) 2)
 #define NA_BASE_U   ((uint) 3)
 
+extern const uint NA_NBASES;
+extern const char NA_BASE_NAMES[];
+extern const uint NA_NBASEPAIRS;
+extern const char NA_BASEPAIR_NAMES[][3];
 extern const uint NA_2BASES_TO_PAIRTYPE[4][4];
 
 struct nn_stack {
