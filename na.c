@@ -207,11 +207,11 @@ xencode_char(char c)
 /* translate from a string representation of a sequence to its internal
    representation */
 void
-xstr_to_seq(uint n, const char *str, uint *seq)
+xstr_to_useq(uint n, const char *str, uint *useq)
 {
     uint i;
     for (i = 0; i < n; i++)
-        seq[i] = xencode_char(str[i]);
+        useq[i] = xencode_char(str[i]);
 }
 
 /* translate a continuous sequence representation into a string by

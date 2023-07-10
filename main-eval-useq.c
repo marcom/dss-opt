@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     print_interactions(inter);
     printf("\n");
 
-    xstr_to_seq(n, seq, useq);
+    xstr_to_useq(n, seq, useq);
     G = calc_interactions(inter, useq);
     printf("G = %5.2f\n", G * 0.01);
 

@@ -65,7 +65,7 @@ int      vienna_to_pairs(uint n, const char *vienna, bool verbose, uint *pairs);
 void     xvienna_to_pairs(uint n, const char *vienna, uint *pairs);
 int      pairs_to_vienna(uint n, const uint *pairs, bool verbose, char *vienna);
 char *   xpairs_to_vienna(uint n, const uint *pairs, char *vienna);
-void     xstr_to_seq(uint n, const char *str, uint *seq);
+void     xstr_to_useq(uint n, const char *str, uint *useq);
 void     xstr_to_pseq(uint n, uint ndim, const char *str, double **p);
 void     pseq_to_str(double **p, uint n, uint ndim, char *str);
 
