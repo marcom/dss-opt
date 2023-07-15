@@ -5,14 +5,54 @@
 #include "unity.h"
 #include "empty-setUp-tearDown.h"
 #include <string.h>
+#include <stdio.h>
 
-void test_run_md(void) {
-    ulong seed = 42;
+
+// TODO: move this function to dss-opt lib
+// TODO: move function to check if two chars are legal basepair to dss-opt lib, it's hardcoded here
+int iscompatible_seq_with_constraints(uint n, const char *seq,
+                                      const char *constraints,
+                                      const uint *pairs)
+{
+    bool isok = true;
+    for (uint i = 0; i < n; i++) {
+        if (constraints[i] != 'N') {
+            uint j = pairs[i];
+            if (j == NA_UNPAIRED) {
+                if (seq[i] != constraints[i]) {
+                    return false;
+                }
+            } else {
+                char ci = seq[i];
+                char cj = seq[j];
+                // TODO: is_legal_basepair(ci, cj)
+                if (! ((ci == 'A' && cj == 'U') ||
+                       (ci == 'U' && cj == 'A') ||
+                       (ci == 'G' && cj == 'C') ||
+                       (ci == 'C' && cj == 'G') ||
+                       (ci == 'G' && cj == 'U') ||
+                       (ci == 'U' && cj == 'G'))
+                    ) {
+                    return false;
+                }
+            }
+        }
+    }
+    return isok;
+}
+
+// TODO: move this convenience function to dss-opt lib
+void helper_run_md(ulong seed, const char *vienna,
+                   const char *seq_constraints_hard,
+                   uint expected_status,
+                   const char *expected_designed_seq)
+{
     random_seed(seed);
-    char *vienna = "(((...)))";
-    int n = strlen(vienna);
-    char *seq_constraints_hard = NULL;
-    char designed_seq[] = {5, 5, 5, 5, 5, 5, 5, 5, 5, 5};
+    uint n = strlen(vienna);
+    char *designed_seq = calloc(n + 1, sizeof(*designed_seq));
+    for (uint i = 0; i < n + 1; i++)
+        designed_seq[i] = 5;
+
     double timestep = 0.0015, T_start = 40.0,
         time_total = 50.0, time_print = 2.5, time_cool = 0.1 * time_total,
         time_pur = 0.8 * time_total;
@@ -34,17 +74,39 @@ void test_run_md(void) {
                         khet, het_window, kpur_end,
                         do_exp_cool, do_movie_output, verbose,
                         designed_seq);
-
-    char *expected_designed_seq = "GGGAAACCC";
-    int expected_status = 0;
+    printf("designed_seq = %s\n", designed_seq);
     TEST_ASSERT_EQUAL_CHAR_ARRAY(expected_designed_seq, designed_seq, n + 1);
     TEST_ASSERT_EQUAL_INT(expected_status, status);
+    if (seq_constraints_hard != NULL) {
+        uint *pairs = calloc(n, sizeof(*pairs));
+        xvienna_to_pairs(n, vienna, pairs);
+        TEST_ASSERT_TRUE(iscompatible_seq_with_constraints(n, designed_seq, seq_constraints_hard, pairs));
+        free(pairs);
+    }
+    free(designed_seq);
+}
+
+void test_run_md(void)
+{
+    helper_run_md(42,
+                  "(((...)))", NULL, 0,
+                  "GGGAAACCC");
+    helper_run_md(12,
+                  "((((((((...))).))).(((....)))))", NULL, 0,
+                  "GCGCGGCCAAAGGCACGCAGGGGAAACCCGC");
+    helper_run_md(42,
+                  "((((((((...))).))).(((....)))))", NULL, 0,
+                  "GCGGGCUGAAACAGACCCAGCCGAAAGGCGC");
+    helper_run_md(42,
+                  "((((((((...))).))).(((....)))))",
+                  "NNCAANGCNUCGNNNNNGNNNNNNGGNNNNN", 0,
+                  "ACCAAGGCAUCGCCAUUGAGGCCAGGGCCGU");
 }
 
 int
 main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_run_md);
+    RUN_TEST(test_run_md   );
     return UNITY_END();
 }
