@@ -107,7 +107,7 @@ run_md(const char *vienna, const char *seq_constraints_hard,
        double timestep, double T_start, double kpi, double kpa, double kneg,
        double khet, uint het_window, double kpur_end,
        bool do_exp_cool, bool do_movie_output, bool verbose,
-       char ** const designed_seq)
+       char *designed_seq)
 {
     uint i, j, step, n, *hard_constraints, n_hard_constr;
     uint ndim = DEFAULT_DSSOPT_ndim;
@@ -218,7 +218,7 @@ run_md(const char *vienna, const char *seq_constraints_hard,
             T = md_calc_temperature(n, ndim, v, mass, kb, ndof);
 
             if (do_movie_output) {
-                print_for_movie(p, n, ndim, *designed_seq);
+                print_for_movie(p, n, ndim, designed_seq);
             } else {
                 if (verbose) {
                     printf("%10u  %12.5f    % 12.3f  % 12.3f  % 12.3f  % 12.3f"
@@ -235,8 +235,8 @@ run_md(const char *vienna, const char *seq_constraints_hard,
             show_bad_prob(p, n, ndim, true);
             printf("\n");
             printf("vienna = %s\n", vienna);
-            pseq_to_str(p, n, ndim, *designed_seq);
-            printf("seq    = %s\n", *designed_seq);
+            pseq_to_str(p, n, ndim, designed_seq);
+            printf("seq    = %s\n", designed_seq);
             printf("\nstep = %u\n", step);
             printf("BOOOOOM --- system exploded\n");
             return EXIT_FAILURE;
@@ -273,19 +273,19 @@ run_md(const char *vienna, const char *seq_constraints_hard,
         printf("END\n\n");
     }
 
-    pseq_to_str(p, n, ndim, *designed_seq);
+    pseq_to_str(p, n, ndim, designed_seq);
     show_bad_prob(p, n, ndim, verbose);
-    show_bad_bp(*designed_seq, inter->pairs, n, verbose);
+    show_bad_bp(designed_seq, inter->pairs, n, verbose);
     if (verbose) {
-        printf("before = %s\n", *designed_seq);
+        printf("before = %s\n", designed_seq);
         printf("fixing bad base pairs\n");
     }
-    nfixed_bp = fix_bad_bp(*designed_seq, inter->pairs, n);
+    nfixed_bp = fix_bad_bp(designed_seq, inter->pairs, n);
     if (verbose) {
         printf("nfixed_bp = %zu\n", nfixed_bp);
         printf("\n");
 
-        print_design_score_info_for_seq(inter, *designed_seq, n, ndim, K_nj, kpi, kpa,
+        print_design_score_info_for_seq(inter, designed_seq, n, ndim, K_nj, kpi, kpa,
                                         kpur, kneg, khet, het_window);
 
         printf("vienna = %s\n", vienna);
@@ -306,7 +306,7 @@ int
 run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
        double kpi, double kpa, double kpur, double kneg, double khet,
        uint het_window, bool do_movie_output, bool verbose,
-       char ** const designed_seq)
+       char *designed_seq)
 {
     uint i, j, step, n;
     uint ndim = DEFAULT_DSSOPT_ndim;
@@ -421,7 +421,7 @@ run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
             scale *= scale_increase;
             if (step % nprint == 0) {
                 if (do_movie_output) {
-                    print_for_movie(p, n, ndim, *designed_seq);
+                    print_for_movie(p, n, ndim, designed_seq);
                 } else if (verbose) {
                     printf("%10d %10.5f %10.2f %10.2f\n", step, scale, Gnn * 0.01, G * 0.01);
                 }
@@ -437,7 +437,7 @@ run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
             scale *= scale_decrease;
             if (step % nprint == 0) {
                 if (do_movie_output) {
-                    print_for_movie(p, n, ndim, *designed_seq);
+                    print_for_movie(p, n, ndim, designed_seq);
                 } else {
                     if (verbose) {
                         printf("%10d %10.5f %10.2f %10.2f\n", step, scale, Gnn * 0.01, Gold * 0.01);
@@ -452,8 +452,8 @@ run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
             show_bad_prob(p, n, ndim, true);
             printf("\n");
             printf("vienna = %s\n", vienna);
-            pseq_to_str(p, n, ndim, *designed_seq);
-            printf("seq    = %s\n", *designed_seq);
+            pseq_to_str(p, n, ndim, designed_seq);
+            printf("seq    = %s\n", designed_seq);
             printf("\nstep = %u\n", step);
             printf("BOOOOOM --- system exploded\n");
             return EXIT_FAILURE;
@@ -465,19 +465,19 @@ run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
 
     /* TODO: all this post-optimisation output is the same in opt-md,
        move to common lib function */
-    pseq_to_str(p, n, ndim, *designed_seq);
+    pseq_to_str(p, n, ndim, designed_seq);
     show_bad_prob(p, n, ndim, verbose);
-    show_bad_bp(*designed_seq, inter->pairs, n, verbose);
+    show_bad_bp(designed_seq, inter->pairs, n, verbose);
     if (verbose) {
-        printf("before = %s\n", *designed_seq);
+        printf("before = %s\n", designed_seq);
         printf("fixing bad base pairs\n");
     }
-    nfixed_bp = fix_bad_bp(*designed_seq, inter->pairs, n);
+    nfixed_bp = fix_bad_bp(designed_seq, inter->pairs, n);
     if (verbose) {
         printf("nfixed_bp = %zu\n", nfixed_bp);
         printf("\n");
 
-        print_design_score_info_for_seq(inter, *designed_seq, n, ndim, K_nj, kpi, kpa,
+        print_design_score_info_for_seq(inter, designed_seq, n, ndim, K_nj, kpi, kpa,
                                         kpur, kneg, khet, het_window);
         printf("vienna = %s\n", vienna);
     }

@@ -27,12 +27,12 @@ int run_md(const char *vienna, const char *seq_constraints_hard,
            double timestep, double T_start, double kpi, double kpa, double kneg,
            double khet, uint het_window, double kpur_end,
            bool do_exp_cool, bool do_movie_output, bool verbose,
-           char ** const designed_seq);
+           char *designed_seq);
 
 /* run sequence optimisation by steepest descent */
 int run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
            double kpi, double kpa, double kpur, double kneg, double khet,
            uint het_window, bool do_movie_output, bool verbose,
-           char ** const designed_seq);
+           char *designed_seq);
 
 #endif /* NA_GUARD_OPT_H */

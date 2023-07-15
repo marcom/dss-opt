@@ -133,7 +133,7 @@ main(int argc, char **argv)
     random_seed(seed);
     char *designed_seq = xmalloc((strlen(vienna) + 1) * sizeof(*designed_seq));
     int status = run_sd(vienna, maxsteps, nprint, wiggle, kpi, kpa, kpur, kneg,
-                      khet, het_window, do_movie_output, verbose, &designed_seq);
+                      khet, het_window, do_movie_output, verbose, designed_seq);
     if (verbose) {
         printf("seq    = %s\n", designed_seq);
     } else {

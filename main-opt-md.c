@@ -183,7 +183,7 @@ main(int argc, char **argv)
     char *designed_seq = xmalloc((strlen(vienna) + 1) * sizeof(*designed_seq));
     int status = run_md(vienna, seq_constraints_hard, nsteps, nprint, ncool, npur,
                         timestep, T_start, kpi, kpa, kneg, khet, het_window, kpur_end,
-                        do_exp_cool, do_movie_output, verbose, &designed_seq);
+                        do_exp_cool, do_movie_output, verbose, designed_seq);
     if (verbose) {
         printf("seq    = %s\n", designed_seq);
     } else {
