@@ -1,0 +1,8 @@
+[project]
+name = "dssopt"
+version = "0.0.1"
+description = "A Python wrapper for the dss-opt RNA sequence design tool"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
