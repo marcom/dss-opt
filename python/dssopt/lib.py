@@ -4,6 +4,10 @@ import ctypes
 from ctypes import CDLL, byref, c_bool, c_char_p, c_int, c_uint, c_double, create_string_buffer, pointer
 c_uint_p = ctypes.POINTER(c_uint)
 
+# TODO maybe: try to load from this path, if file not exists load
+# __file__/../../libdssopt.so as this is the path in the repo when the
+# python module has not been installed with pip
+
 libdssopt_path = str(pathlib.Path(__file__).parent / "libdssopt.so")
 #print(f"__file__ = {__file__}")
 #print(f"libdssopt_path = {libdssopt_path}")
@@ -83,6 +87,7 @@ def isok_seq_constraints(constraints: str, vienna: str) -> bool:
     return False
 
 def opt_md(target_dbn: str,
+           seed: Union[int, None] = None,
            seq_constraints_hard: Union[str, None] = None,
            # default values taken from main-opt-md.c
            time_total: float = 50.0,
@@ -99,9 +104,37 @@ def opt_md(target_dbn: str,
            het_window: int = DEFAULT_DSSOPT_het_window,
            do_exp_cool: bool = False,
            do_movie_output :bool = False,
-           seed: Union[int, None] = None,
            verbose: bool = False,
            ) -> str:
+    """Design a sequence for a given secondary structure by dynamical
+    simulated annealing optimization (dynamics in sequence space).
+
+    Returns the designed sequence.
+
+    Args:
+        target_dbn (str): Target secondary structure in Vienna format (dot-bracket)
+        seed (int): Seed for random numbers, if set to None current time is used
+        seq_constraints_hard (str): Hard sequence constraints (can be None). String of "ACGU" chars and "N" or "." wildcards
+        time_total (float): Total optimization time
+        time_print (float): Interval between printing optimization state
+        time_cool (float): Time after which cooling should begin
+        time_pur (float): Time after which purification terms should start to be linearly increased (see kpur_end)
+        timestep (float): Simulation timestep
+        T_start (float): Starting temperature
+        kpi (float): Scoring function constant for penalty terms, keeps \f$ x_{ij} \in [0,1] \f$
+        kpa (float): Scoring function constant for penalty term, keeps \f$ \sum_j x_{ij} \approx 1 \f$
+        kneg (float): Scoring function constant for mean-field negative design term
+        khet (float): Scoring function constant for sequence heterogeneity term
+        het_window (int): Window size for sequence heterogeneity term
+        kpur_end (float): Scoring function constant for sequence purification term at the end of optimization
+        do_exp_cool (bool): Flag to indicate if exponential cooling is to be used, otherwise linear cooling is used
+        do_movie_output (bool): Flag to indicate if movie output is to be generated
+        verbose (bool): Flag to indicate if verbose output is enabled
+
+    Returns:
+        str: The designed sequence
+
+    """
     if time_cool == None:
         time_cool = 0.1 * time_total
     if time_pur == None:
