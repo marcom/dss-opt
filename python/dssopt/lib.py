@@ -63,7 +63,24 @@ libdssopt.run_md.argtypes = [
     c_bool,    # verbose
     c_char_p,  # *designed_seq
 ]
-libdssopt.run_md.restype = c_uint
+libdssopt.run_md.restype = c_int
+# run_sd
+libdssopt.run_sd.argtypes = [
+    c_char_p,  # *vienna
+    c_uint,    # maxsteps
+    c_uint,    # nprint
+    c_double,  # wiggle
+    c_double,  # kpi
+    c_double,  # kpa
+    c_double,  # kpur
+    c_double,  # kneg
+    c_double,  # khet
+    c_uint,    # het_window
+    c_bool,    # do_movie_output
+    c_bool,    # verbose
+    c_char_p,  # *designed_seq
+]
+libdssopt.run_sd.restype = c_int
 
 
 def list_to_carray(lst, ctype=c_int):
@@ -121,8 +138,8 @@ def opt_md(target_dbn: str,
         time_pur (float): Time after which purification terms should start to be linearly increased (see kpur_end)
         timestep (float): Simulation timestep
         T_start (float): Starting temperature
-        kpi (float): Scoring function constant for penalty terms, keeps \f$ x_{ij} \in [0,1] \f$
-        kpa (float): Scoring function constant for penalty term, keeps \f$ \sum_j x_{ij} \approx 1 \f$
+        kpi (float): Scoring function constant for penalty terms, keeps :math:`x_{ij} \\in [0,1]`
+        kpa (float): Scoring function constant for penalty term, keeps :math:`\sum_j x_{ij} \\approx 1`
         kneg (float): Scoring function constant for mean-field negative design term
         khet (float): Scoring function constant for sequence heterogeneity term
         het_window (int): Window size for sequence heterogeneity term
@@ -172,6 +189,62 @@ def opt_md(target_dbn: str,
         raise Exception(f'run_md returned non-zero exit status: {status}')
     designed_seq = designed_seq_buf.value.decode('utf-8')
     return designed_seq
+
+def opt_sd(target_dbn: str,
+           seed: Union[int, None] = None,
+           maxsteps: int = 20000,
+           nprint: int = 1000,
+           wiggle: float = 0.1,
+           kpi: float = DEFAULT_DSSOPT_kpi,
+           kpa: float = DEFAULT_DSSOPT_kpa,
+           kpur: float = DEFAULT_DSSOPT_kpur,
+           kneg: float = DEFAULT_DSSOPT_kneg,
+           khet: float = DEFAULT_DSSOPT_khet,
+           het_window: int = DEFAULT_DSSOPT_het_window,
+           do_movie_output :bool = False,
+           verbose: bool = False,
+           ) -> str:
+    """Design a sequence for a given secondary structure by
+    steepest descent optimization.
+
+    Returns the designed sequence.
+
+    Args:
+        target_dbn (str): Target secondary structure in Vienna format (dot-bracket)
+        seed (int): Seed for random numbers, if set to None current time is used
+        maxsteps (int): Maximum number of steps for optimization
+        nprint (int): Printing interval for showing status of optimization
+        kpi (float): Scoring function constant for penalty terms, keeps :math:`x_{ij} \\in [0,1]`
+        kpa (float): Scoring function constant for penalty term, keeps :math:`\sum_j x_{ij} \\approx 1`
+        kpur (float): Scoring function constant for sequence purification term
+        kneg (float): Scoring function constant for mean-field negative design term
+        khet (float): Scoring function constant for sequence heterogeneity term
+        het_window (int): Window size for sequence heterogeneity term
+        do_movie_output (bool): Flag to indicate if movie output is to be generated
+        verbose (bool): Flag to indicate if verbose output is enabled
+
+    Returns:
+        str: The designed sequence
+
+    """
+    if maxsteps <= 0:
+        raise Exception('maxsteps must be > 0')
+    if het_window < 0:
+        raise Exception('het_window must be >= 0')
+    if seed == None:
+        seed = libdssopt.random_get_seedval_from_current_time()
+    libdssopt.random_seed(seed)
+    vienna = target_dbn.encode('utf-8')
+    # + 1 for C-style 0-terminated strings
+    designed_seq_buf = create_string_buffer(len(target_dbn) + 1)
+    status = libdssopt.run_sd(vienna, maxsteps, nprint, wiggle,
+                              kpi, kpa, kpur, kneg, khet, het_window,
+                              do_movie_output, verbose, designed_seq_buf)
+    if status != C_EXIT_SUCCESS:
+        raise Exception(f'run_sd returned non-zero exit status: {status}')
+    designed_seq = designed_seq_buf.value.decode('utf-8')
+    return designed_seq
+
 
 def random_vienna(n: int, hpmin: int=3) -> str:
     pairs = list_to_carray([0] * n, c_uint)
