@@ -20,8 +20,35 @@ int parse_seq_constraints_hard(uint n, uint *hard, uint *n_hard,
                                const char *constraint_str, bool verbose,
                                const uint *pairs);
 
-/* run sequence optimisation by dynamics in sequence space (dynamical
-   simulated annealing) */
+/**
+ * @brief Design a sequence for a given secondary structure by
+ * dynamical simulated annealing optimization (dynamics in sequence
+ * space).
+ *
+ * Returns the status code EXIT_SUCCESS if the optimization was
+ * successful.
+ *
+ * @param[in]  vienna            Target secondary structure in Vienna format (dot-bracket)
+ * @param[in]  seq_constraints_hard  Hard sequence constraints, a string of "NACGU" chars (can be NULL)
+ * @param[in]  nsteps            Number of steps for the optimization
+ * @param[in]  nprint            Interval for printing the optimization status
+ * @param[in]  ncool             Number of steps after which cooling begins
+ * @param[in]  npur              Number of steps after which purification begins
+ * @param[in]  timestep          Simulation timestep
+ * @param[in]  T_start           Starting temperature
+ * @param[in]  kpi               Scoring function constant for penalty terms, keeps \f$ x_{ij} \in [0,1] \f$
+ * @param[in]  kpa               Scoring function constant for penalty termn, keeps \f$ \sum_j x_{ij} \approx 1 \f$
+ * @param[in]  kneg              Scoring function constant for mean-field negative design term
+ * @param[in]  khet              Scoring function constant for sequence heterogeneity term
+ * @param[in]  het_window        Window size for sequence heterogeneity term
+ * @param[in]  kpur_end          Scoring function constant for sequence purification term at the end of opt.
+ * @param[in]  do_exp_cool       Flag to indicate if exponential cooling is to be used
+ * @param[in]  do_movie_output   Flag to indicate if movie output is to be generated
+ * @param[in]  verbose           Flag to indicate if verbose output is enabled
+ * @param[out] designed_seq      The output designed sequence
+ *
+ * @return                       Returns int status code EXIT_SUCCESS on success.
+ */
 int run_md(const char *vienna, const char *seq_constraints_hard,
            uint nsteps, uint nprint, uint ncool, uint npur,
            double timestep, double T_start, double kpi, double kpa, double kneg,
@@ -30,6 +57,29 @@ int run_md(const char *vienna, const char *seq_constraints_hard,
            char *designed_seq);
 
 /* run sequence optimisation by steepest descent */
+/**
+ * @brief Design a sequence for a given secondary structure by
+ * steepest descent optimization.
+ *
+ * Returns the status code EXIT_SUCCESS if the optimization was
+ * successful.
+ *
+ * @param[in]  vienna           Target secondary structure in Vienna format (dot-bracket)
+ * @param[in]  maxsteps         Maximum number of steps for the optimization
+ * @param[in]  nprint           Interval for printing the optimization status
+ * @param[in]  wiggle           Scaling factor of random perturbation to initial starting point
+ * @param[in]  kpi              Scoring function constant for penalty terms, keeps \f$ x_{ij} \in [0,1] \f$
+ * @param[in]  kpa              Scoring function constant for penalty termn, keeps \f$ \sum_j x_{ij} \approx 1 \f$
+ * @param[in]  kpur_end         Scoring function constant for sequence purification term
+ * @param[in]  kneg             Scoring function constant for mean-field negative design term
+ * @param[in]  khet             Scoring function constant for sequence heterogeneity term
+ * @param[in]  het_window       Window size for sequence heterogeneity term
+ * @param[in]  do_movie_output  Flag to indicate if movie output is to be generated
+ * @param[in]  verbose          Flag to indicate if verbose output is enabled
+ * @param[out] designed_seq     The output designed sequence
+ *
+ * @return                      Returns int status code EXIT_SUCCESS on success.
+ */
 int run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
            double kpi, double kpa, double kpur, double kneg, double khet,
            uint het_window, bool do_movie_output, bool verbose,
