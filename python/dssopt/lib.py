@@ -10,6 +10,14 @@ libdssopt = CDLL(libdssopt_path)
 
 C_EXIT_SUCCESS = 0
 
+DEFAULT_DSSOPT_ndim = c_uint.in_dll(libdssopt, 'DEFAULT_DSSOPT_ndim').value
+DEFAULT_DSSOPT_kpi = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpi').value
+DEFAULT_DSSOPT_kpa = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpa').value
+DEFAULT_DSSOPT_kneg = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kneg').value
+DEFAULT_DSSOPT_kpur = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpur').value
+DEFAULT_DSSOPT_khet = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_khet').value
+DEFAULT_DSSOPT_het_window = c_uint.in_dll(libdssopt, 'DEFAULT_DSSOPT_het_window').value
+
 def list_to_carray(lst, ctype=c_int):
     return (ctype * len(lst))(*lst)
 
@@ -22,19 +30,30 @@ def opt_md(target_dbn: str,
            time_pur: Union[float, None] = None,
            timestep: float   = 0.0015,
            T_start: float    = 40.0,
+           kpi: float = DEFAULT_DSSOPT_kpi,
+           kpa: float = DEFAULT_DSSOPT_kpa,
+           kneg: float = DEFAULT_DSSOPT_kneg,
+           kpur_end: float = DEFAULT_DSSOPT_kpur,
+           khet: float = DEFAULT_DSSOPT_khet,
+           het_window: int = DEFAULT_DSSOPT_het_window,
            do_exp_cool: bool = False,
            do_movie_output :bool = False,
            seed: Union[int, None] = None,
            verbose: bool = False,
-           ):
+           ) -> str:
     # TODO
-    # - checks: time_*, T_start >= 0, het_window >= 0
-    # - seq_constraints_hard
-    # - be able to set kpi, kpa, kneg, khet, kpur_end, het_window
+    # - checks
+    #   - seq_constraints_hard
     if time_cool == None:
         time_cool = 0.1 * time_total
     if time_pur == None:
         time_pur = 0.8 * time_total
+    if time_total < 0 or time_print < 0 or time_cool < 0:
+        raise Exception("All times must be >= 0")
+    if timestep < 0:
+        raise Exception("timestep must be >= 0")
+    if het_window < 0:
+        raise Exception("het_window must be >= 0")
     nsteps = c_uint(round(time_total / timestep))
     nprint = c_uint(round(time_print / timestep))
     ncool  = c_uint(round(time_cool  / timestep))
@@ -42,20 +61,6 @@ def opt_md(target_dbn: str,
     if seed == None:
         seed = libdssopt.random_get_seedval_from_current_time()
     libdssopt.random_seed(seed)
-
-    kpi_ptr = pointer(c_double(0.0))
-    kpa_ptr = pointer(c_double(0.0))
-    kneg_ptr = pointer(c_double(0.0))
-    kpur_end_ptr = pointer(c_double(0.0))
-    khet_ptr = pointer(c_double(0.0))
-    het_window_ptr = pointer(c_uint(0))
-    libdssopt.set_dss_force_constants_defaults(kpi_ptr, kpa_ptr, kneg_ptr, kpur_end_ptr, khet_ptr, het_window_ptr)
-    kpi = c_double(kpi_ptr.contents.value)
-    kpa = c_double(kpa_ptr.contents.value)
-    kneg = c_double(kneg_ptr.contents.value)
-    kpur_end = c_double(kpur_end_ptr.contents.value)
-    khet = c_double(khet_ptr.contents.value)
-    het_window = c_uint(het_window_ptr.contents.value)
 
     timestep = c_double(timestep)
     T_start = c_double(T_start)
