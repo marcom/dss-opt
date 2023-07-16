@@ -13,9 +13,41 @@
 #define DEFAULT_DSSOPT_khet 10.0
 #define DEFAULT_DSSOPT_het_window 3u
 
+/**
+ * @brief Parse a hard sequence constraints string to an integer
+ * encoding, exiting on failure.
+ *
+ * Checks if the constraint string contains only valid nucleotides or
+ * wildcards, and that the constraints are compatible with a given
+ * secondary structure.
+ *
+ * @param[in]  n               Length of `constraint_str` and `pairs`
+ * @param[out] hard            Hard sequence constraints encoded as array of uint
+ * @param[in]  constraint_str  Hard sequence constraints as a string of "N" or "." wildcards and "ACGU" letters
+ * @param[in]  pairs           Pair list encoding a secondary structure
+ *
+ * @return                     Returns number of non-wildcard hard sequence constraints
+ */
 uint x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
                                   const uint *pairs);
 
+/**
+ * @brief Parse a hard sequence constraints string to an integer
+ * encoding and indicate errors in the constraints.
+ *
+ * Checks if the constraint string contains only valid nucleotides or
+ * wildcards, and that the constraints are compatible with a given
+ * secondary structure.
+ *
+ * @param[in]  n               Length of `constraint_str` and `pairs`
+ * @param[out] hard            Hard sequence constraints encoded as array of uint
+ * @param[out] n_hard          Number of non-wildcard hard sequence constraints
+ * @param[in]  constraint_str  Hard sequence constraints as a string of "N" or "." wildcards and "ACGU" letters
+ * @param[in]  verbose         Print details on parsing errors of the sequence constraints to stdout
+ * @param[in]  pairs           Pair list encoding a secondary structure
+ *
+ * @return                     Returns EXIT_SUCCESS if there were no errors parsing the sequence constraints
+ */
 int parse_seq_constraints_hard(uint n, uint *hard, uint *n_hard,
                                const char *constraint_str, bool verbose,
                                const uint *pairs);
@@ -29,7 +61,7 @@ int parse_seq_constraints_hard(uint n, uint *hard, uint *n_hard,
  * successful.
  *
  * @param[in]  vienna            Target secondary structure in Vienna format (dot-bracket)
- * @param[in]  seq_constraints_hard  Hard sequence constraints, a string of "NACGU" chars (can be NULL)
+ * @param[in]  seq_constraints_hard  Hard sequence constraints (can be NULL). String of "ACGU" chars and "N" or "." wildcards
  * @param[in]  nsteps            Number of steps for the optimization
  * @param[in]  nprint            Interval for printing the optimization status
  * @param[in]  ncool             Number of steps after which cooling begins
