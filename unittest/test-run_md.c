@@ -53,6 +53,7 @@ void helper_run_md(ulong seed, const char *vienna,
     for (uint i = 0; i < n + 1; i++)
         designed_seq[i] = 5;
 
+    // TODO: duplicated from main-opt-md.c
     double timestep = 0.0015, T_start = 40.0,
         time_total = 50.0, time_print = 2.5, time_cool = 0.1 * time_total,
         time_pur = 0.8 * time_total;
