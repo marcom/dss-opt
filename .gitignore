@@ -29,5 +29,5 @@
 # python files
 /python/build
 /python/venv
-/python/dssopt.egg-info/
-/python/dssopt/__pycache__/
+*.egg-info
+__pycache__/

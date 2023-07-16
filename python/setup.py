@@ -33,6 +33,9 @@ setup(
     # package_data={'dssopt': ['../libdssopt.so']},
     cmdclass={'install': InstallPkg},
     # ext_modules=[dssopt_module],
+    extras_require = {
+        'test': ['pytest',],
+    },
 )
 
 
