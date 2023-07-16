@@ -87,7 +87,6 @@ int run_md(const char *vienna, const char *seq_constraints_hard,
            bool do_exp_cool, bool do_movie_output, bool verbose,
            char *designed_seq);
 
-/* run sequence optimisation by steepest descent */
 /**
  * @brief Design a sequence for a given secondary structure by
  * steepest descent optimization.
