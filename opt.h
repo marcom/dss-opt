@@ -4,14 +4,13 @@
 #include "ctools/libctools.h"
 #include <stdbool.h>
 
-#define DEFAULT_DSSOPT_ndim 4u
-
-#define DEFAULT_DSSOPT_kpi 50000.0
-#define DEFAULT_DSSOPT_kpa 50000.0
-#define DEFAULT_DSSOPT_kneg 1.0
-#define DEFAULT_DSSOPT_kpur 0.0
-#define DEFAULT_DSSOPT_khet 10.0
-#define DEFAULT_DSSOPT_het_window 3u
+extern const uint    DEFAULT_DSSOPT_ndim;
+extern const double  DEFAULT_DSSOPT_kpi;
+extern const double  DEFAULT_DSSOPT_kpa;
+extern const double  DEFAULT_DSSOPT_kneg;
+extern const double  DEFAULT_DSSOPT_kpur;
+extern const double  DEFAULT_DSSOPT_khet;
+extern const uint    DEFAULT_DSSOPT_het_window;
 
 /**
  * @brief Parse a hard sequence constraints string to an integer

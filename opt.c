@@ -18,6 +18,14 @@
 #include <math.h>
 #include <string.h>
 
+const uint    DEFAULT_DSSOPT_ndim       = 4u;
+const double  DEFAULT_DSSOPT_kpi        = 50000.0;
+const double  DEFAULT_DSSOPT_kpa        = 50000.0;
+const double  DEFAULT_DSSOPT_kneg       = 1.0;
+const double  DEFAULT_DSSOPT_kpur       = 0.0;
+const double  DEFAULT_DSSOPT_khet       = 10.0;
+const uint    DEFAULT_DSSOPT_het_window = 3u;
+
 uint
 x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
                              const uint *pairs)
