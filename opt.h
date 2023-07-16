@@ -101,7 +101,7 @@ int run_md(const char *vienna, const char *seq_constraints_hard,
  * @param[in]  wiggle           Scaling factor of random perturbation to initial starting point
  * @param[in]  kpi              Scoring function constant for penalty terms, keeps \f$ x_{ij} \in [0,1] \f$
  * @param[in]  kpa              Scoring function constant for penalty termn, keeps \f$ \sum_j x_{ij} \approx 1 \f$
- * @param[in]  kpur_end         Scoring function constant for sequence purification term
+ * @param[in]  kpur             Scoring function constant for sequence purification term
  * @param[in]  kneg             Scoring function constant for mean-field negative design term
  * @param[in]  khet             Scoring function constant for sequence heterogeneity term
  * @param[in]  het_window       Window size for sequence heterogeneity term
