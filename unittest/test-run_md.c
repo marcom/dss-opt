@@ -108,6 +108,6 @@ int
 main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_run_md   );
+    RUN_TEST(test_run_md);
     return UNITY_END();
 }

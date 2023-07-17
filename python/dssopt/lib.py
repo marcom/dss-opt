@@ -192,6 +192,7 @@ def opt_md(target_dbn: str,
 
 def opt_sd(target_dbn: str,
            seed: Union[int, None] = None,
+           # TODO: taken from main-opt-sd.c
            maxsteps: int = 20000,
            nprint: int = 1000,
            wiggle: float = 0.1,
