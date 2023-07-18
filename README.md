@@ -45,6 +45,26 @@ the
 directory contains instructions on how to build this utility.
 
 
+## Python interface
+
+The beginnings of a python interface can be found in the directory
+`python/`.  Install it with
+```sh
+pip install python/
+
+# alternatively, if you want to run the python unit tests, do
+pip install python/[test]
+# run the python unit tests
+pytest
+```
+
+Example usage:
+```python
+import dssopt
+dssopt.opt_md('(((...)))')
+```
+
+
 ## Energy parameters
 
 The parameters for the RNA nearest neighbour energy model were
