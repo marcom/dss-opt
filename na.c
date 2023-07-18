@@ -571,6 +571,10 @@ void
 random_pairs(uint n, uint *pairs, uint hpmin)
 {
     uint i;
+    if (n == 0) {
+        /* avoid uint underflow of `n - 1` used later on */
+        return;
+    }
     for (i = 0; i < n; i++)
         pairs[i] = NA_UNPAIRED;
     helper_random_pairs_iter(pairs, 0, n - 1, hpmin);
@@ -579,7 +583,8 @@ static void
 helper_random_pairs_iter(uint *pairs, uint i, uint j, uint hpmin)
 {
     uint p, q;
-    if (i > j - hpmin - 1)
+    /* test `j < j - hpmin - 1` is true for uint underflow */
+    if (j < j - hpmin - 1 || i > j - hpmin - 1)
         return;
     p = random_uint(i, j - hpmin - 1);
     q = random_uint(p + hpmin + 1, j);
