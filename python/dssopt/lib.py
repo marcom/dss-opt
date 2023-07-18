@@ -247,6 +247,7 @@ def opt_sd(target_dbn: str,
 
 def random_vienna(n: int, hpmin: int=3) -> str:
     """Generate random secondary structure in Vienna (dot-bracket) format.
+    Note that the secondary structures are not uniformly sampled.
 
     Args:
         n (int):      Length of secondary structure
@@ -254,6 +255,7 @@ def random_vienna(n: int, hpmin: int=3) -> str:
 
     Returns:
         str: The secondary structure in Vienna (dot-bracket) notation.
+
     """
     pairs = list_to_carray([0] * n, c_uint)
     libdssopt.random_pairs(n, byref(pairs), hpmin)
