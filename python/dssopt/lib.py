@@ -150,7 +150,6 @@ def opt_md(target_dbn: str,
 
     Returns:
         str: The designed sequence
-
     """
     if time_cool == None:
         time_cool = 0.1 * time_total
@@ -226,7 +225,6 @@ def opt_sd(target_dbn: str,
 
     Returns:
         str: The designed sequence
-
     """
     if maxsteps <= 0:
         raise Exception('maxsteps must be > 0')
@@ -248,6 +246,15 @@ def opt_sd(target_dbn: str,
 
 
 def random_vienna(n: int, hpmin: int=3) -> str:
+    """Generate random secondary structure in Vienna (dot-bracket) format.
+
+    Args:
+        n (int):      Length of secondary structure
+        hpmin (int):  Minimum hairpin length (default = 3)
+
+    Returns:
+        str: The secondary structure in Vienna (dot-bracket) notation.
+    """
     pairs = list_to_carray([0] * n, c_uint)
     libdssopt.random_pairs(n, byref(pairs), hpmin)
     # + 1 for C-style 0-terminated strings
