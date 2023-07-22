@@ -1,5 +1,5 @@
 import subprocess
-from setuptools import setup # , Extension
+from setuptools import setup
 from distutils.command.install import install as _install
 import os
 import shutil
@@ -15,16 +15,6 @@ class InstallPkg(_install):
         shutil.copy(lib_path, destination)
         _install.run(self)
 
-# subprocess.call(['make', '-C', '..', 'lib'])
-
-# # Extension module
-# dssopt_module = Extension(
-#     'dssopt.libdssopt',
-#     sources=[],
-#     libraries=['dssopt'],
-#     library_dirs=['..']
-# )
-
 setup(
     name = 'dssopt',
     version = '0.1',
@@ -37,34 +27,3 @@ setup(
         'test': ['pytest',],
     },
 )
-
-
-
-# from setuptools import setup, Extension
-
-# # Extension module
-# mylib_module = Extension(
-#     'mylibrary._mylib',
-#     sources=['mylibrary/_mylib.c'],
-# )
-
-# setup(
-#     name='mylibrary',
-#     version='0.1',
-#     packages=['mylibrary'],
-#     ext_modules=[mylib_module],
-# )
-
-
-# import os
-# import shutil
-# from distutils.sysconfig import get_python_lib
-
-# def main():
-#     lib_path = "../libdssopt.so"
-#     destination = os.path.join(get_python_lib(), "dssopt")
-#     os.makedirs(destination, exist_ok=True)
-#     shutil.copy(lib_path, destination)
-
-# if __name__ == "__main__":
-#     main()
