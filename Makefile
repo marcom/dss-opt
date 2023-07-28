@@ -1,4 +1,4 @@
-.PHONY: all lib clean check check-valgrind unittest unittest-valgrind
+.PHONY: all lib clean check check-valgrind unittest unittest-valgrind pytest
 
 CC      = cc
 CFLAGS += -std=c99
@@ -56,6 +56,11 @@ unittest: lib
 
 unittest-valgrind: lib
 	make -C unittest check-valgrind
+
+pytest:
+	. ./python/venv/bin/activate && \
+	  pip install ./python/[test] && \
+	  pytest
 
 $(PROGS_MISC): %: main-%.c $(OBJS_COMMON)
 	@echo -n "[LINK     ]  "
