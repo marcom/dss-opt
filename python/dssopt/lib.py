@@ -14,13 +14,22 @@ libdssopt = CDLL(libdssopt_path)
 
 C_EXIT_SUCCESS = 0
 
-DSSOPT_DEFAULT_ndim = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_ndim').value
-DSSOPT_DEFAULT_kpi = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpi').value
-DSSOPT_DEFAULT_kpa = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpa').value
-DSSOPT_DEFAULT_kneg = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kneg').value
-DSSOPT_DEFAULT_kpur = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpur').value
-DSSOPT_DEFAULT_khet = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_khet').value
+DSSOPT_DEFAULT_ndim       = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_ndim').value
+DSSOPT_DEFAULT_kpi        = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpi').value
+DSSOPT_DEFAULT_kpa        = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpa').value
+DSSOPT_DEFAULT_kneg       = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kneg').value
+DSSOPT_DEFAULT_kpur       = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpur').value
+DSSOPT_DEFAULT_khet       = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_khet').value
 DSSOPT_DEFAULT_het_window = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_het_window').value
+
+DSSOPT_DEFAULT_OPT_MD_timestep   = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_timestep').value
+DSSOPT_DEFAULT_OPT_MD_time_total = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_time_total').value
+DSSOPT_DEFAULT_OPT_MD_time_print = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_time_print').value
+DSSOPT_DEFAULT_OPT_MD_T_start    = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_T_start').value
+
+DSSOPT_DEFAULT_OPT_SD_maxsteps   = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_SD_maxsteps').value
+DSSOPT_DEFAULT_OPT_SD_nprint     = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_SD_nprint').value
+DSSOPT_DEFAULT_OPT_SD_wiggle     = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_SD_wiggle').value
 
 # C function argtypes and restype
 # parse_seq_constraints_hard
