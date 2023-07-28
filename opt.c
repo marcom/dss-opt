@@ -28,10 +28,10 @@ const uint    DSSOPT_DEFAULT_het_window = 3u;
 
 const double  DSSOPT_DEFAULT_OPT_MD_time_total = 50.0;
 const double  DSSOPT_DEFAULT_OPT_MD_time_print = 2.5;
-const double  DSSOPT_DEFAULT_OPT_MD_time_cool  = 0.1 * DSSOPT_DEFAULT_OPT_MD_time_total;
-const double  DSSOPT_DEFAULT_OPT_MD_time_pur   = 0.8 * DSSOPT_DEFAULT_OPT_MD_time_total;
 const double  DSSOPT_DEFAULT_OPT_MD_timestep   = 0.0015;
 const double  DSSOPT_DEFAULT_OPT_MD_T_start    = 40.0;
+double dssopt_default_opt_md_time_cool(double time_total) { return 0.1 * time_total; }
+double dssopt_default_opt_md_time_pur(double time_total) { return 0.8 * time_total; }
 
 const uint    DSSOPT_DEFAULT_OPT_SD_maxsteps = 20000;
 const uint    DSSOPT_DEFAULT_OPT_SD_nprint   = 1000;

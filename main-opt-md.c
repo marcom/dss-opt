@@ -40,12 +40,13 @@ main(int argc, char **argv)
 
     /* default settings */
     bool do_exp_cool = false, do_movie_output = false, verbose = true;
-    double timestep   = DSSOPT_DEFAULT_OPT_MD_timestep,
-           T_start    = DSSOPT_DEFAULT_OPT_MD_T_start,
-           time_total = DSSOPT_DEFAULT_OPT_MD_time_total,
-           time_print = DSSOPT_DEFAULT_OPT_MD_time_print,
-           time_cool  = DSSOPT_DEFAULT_OPT_MD_time_cool,
-           time_pur   = DSSOPT_DEFAULT_OPT_MD_time_pur;
+    double timestep   = DSSOPT_DEFAULT_OPT_MD_timestep;
+    double T_start    = DSSOPT_DEFAULT_OPT_MD_T_start;
+    double time_total = DSSOPT_DEFAULT_OPT_MD_time_total;
+    double time_print = DSSOPT_DEFAULT_OPT_MD_time_print;
+    double time_cool  = dssopt_default_opt_md_time_cool(time_total);
+    double time_pur   = dssopt_default_opt_md_time_pur(time_total);
+    bool has_arg_time_cool = false, has_arg_time_pur = false;
     double kpi, kpa, kneg, kpur_end, khet;
     uint het_window;
     ulong seed = random_get_seedval_from_current_time();
@@ -100,6 +101,7 @@ main(int argc, char **argv)
             case 7: time_print = atof(optarg);
                 break;
             case 8: time_cool = atof(optarg);
+                has_arg_time_cool = true;
                 break;
             case 9:
                 if (strcmp(optarg, "exponential") == 0) {
@@ -112,6 +114,7 @@ main(int argc, char **argv)
                 }
                 break;
             case 10: time_pur = atof(optarg);
+                has_arg_time_pur = true;
                 break;
             case 11: kpur_end = atof(optarg);
                 break;
@@ -148,6 +151,14 @@ main(int argc, char **argv)
         printf("%s: wrong number of arguments for target structure\n", argv[0]);
         usage(argv[0]);
         exit(EXIT_FAILURE);
+    }
+
+    /* Unless set explicitly, set default time_cool, time_pur depending on total_time */
+    if (! has_arg_time_cool) {
+        time_cool = dssopt_default_opt_md_time_cool(time_total);
+    }
+    if (! has_arg_time_pur) {
+        time_pur = dssopt_default_opt_md_time_pur(time_total);
     }
 
     /* sanity checking of command-line args */

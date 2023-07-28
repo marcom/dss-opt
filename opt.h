@@ -14,10 +14,10 @@ extern const uint    DSSOPT_DEFAULT_het_window;
 
 extern const double  DSSOPT_DEFAULT_OPT_MD_time_total;
 extern const double  DSSOPT_DEFAULT_OPT_MD_time_print;
-extern const double  DSSOPT_DEFAULT_OPT_MD_time_cool;
-extern const double  DSSOPT_DEFAULT_OPT_MD_time_pur;
 extern const double  DSSOPT_DEFAULT_OPT_MD_timestep;
 extern const double  DSSOPT_DEFAULT_OPT_MD_T_start;
+double dssopt_default_opt_md_time_cool(double time_total);
+double dssopt_default_opt_md_time_pur(double time_total);
 
 extern const uint    DSSOPT_DEFAULT_OPT_SD_maxsteps;
 extern const uint    DSSOPT_DEFAULT_OPT_SD_nprint;
