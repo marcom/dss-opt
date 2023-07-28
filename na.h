@@ -81,7 +81,7 @@ void     random_useq(uint n, const uint *pairs, uint *useq);
 
 
 
-int      calc_interactions(const struct nn_inter *inter, const uint *useq);
+int      calc_interactions_useq(const struct nn_inter *inter, const uint *useq);
 double   calc_interactions_pseq(const struct nn_inter *inter, double **p);
 void     calc_interactions_dGdp_pseq(const struct nn_inter *inter, double **p,
                                      double **dGdp);

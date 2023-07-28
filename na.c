@@ -639,7 +639,7 @@ random_pseq(uint n, uint ndim, const uint *pairs, double **p)
 }
 
 int
-calc_interactions(const struct nn_inter *inter, const uint *useq)
+calc_interactions_useq(const struct nn_inter *inter, const uint *useq)
 {
     uint i;
     int G = 0, Ge = 0, Gs = 0, Gb = 0, Gi = 0, Gh = 0, Gm = 0;
