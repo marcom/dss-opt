@@ -15,13 +15,13 @@ libdssopt = CDLL(libdssopt_path)
 
 C_EXIT_SUCCESS = 0
 
-DEFAULT_DSSOPT_ndim = c_uint.in_dll(libdssopt, 'DEFAULT_DSSOPT_ndim').value
-DEFAULT_DSSOPT_kpi = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpi').value
-DEFAULT_DSSOPT_kpa = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpa').value
-DEFAULT_DSSOPT_kneg = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kneg').value
-DEFAULT_DSSOPT_kpur = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_kpur').value
-DEFAULT_DSSOPT_khet = c_double.in_dll(libdssopt, 'DEFAULT_DSSOPT_khet').value
-DEFAULT_DSSOPT_het_window = c_uint.in_dll(libdssopt, 'DEFAULT_DSSOPT_het_window').value
+DSSOPT_DEFAULT_ndim = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_ndim').value
+DSSOPT_DEFAULT_kpi = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpi').value
+DSSOPT_DEFAULT_kpa = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpa').value
+DSSOPT_DEFAULT_kneg = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kneg').value
+DSSOPT_DEFAULT_kpur = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_kpur').value
+DSSOPT_DEFAULT_khet = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_khet').value
+DSSOPT_DEFAULT_het_window = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_het_window').value
 
 # C function argtypes and restype
 # parse_seq_constraints_hard
@@ -113,12 +113,12 @@ def opt_md(target_dbn: str,
            time_pur: Union[float, None] = None,
            timestep: float = 0.0015,
            T_start: float = 40.0,
-           kpi: float = DEFAULT_DSSOPT_kpi,
-           kpa: float = DEFAULT_DSSOPT_kpa,
-           kneg: float = DEFAULT_DSSOPT_kneg,
-           kpur_end: float = DEFAULT_DSSOPT_kpur,
-           khet: float = DEFAULT_DSSOPT_khet,
-           het_window: int = DEFAULT_DSSOPT_het_window,
+           kpi: float = DSSOPT_DEFAULT_kpi,
+           kpa: float = DSSOPT_DEFAULT_kpa,
+           kneg: float = DSSOPT_DEFAULT_kneg,
+           kpur_end: float = DSSOPT_DEFAULT_kpur,
+           khet: float = DSSOPT_DEFAULT_khet,
+           het_window: int = DSSOPT_DEFAULT_het_window,
            do_exp_cool: bool = False,
            do_movie_output :bool = False,
            verbose: bool = False,
@@ -195,12 +195,12 @@ def opt_sd(target_dbn: str,
            maxsteps: int = 20000,
            nprint: int = 1000,
            wiggle: float = 0.1,
-           kpi: float = DEFAULT_DSSOPT_kpi,
-           kpa: float = DEFAULT_DSSOPT_kpa,
-           kpur: float = DEFAULT_DSSOPT_kpur,
-           kneg: float = DEFAULT_DSSOPT_kneg,
-           khet: float = DEFAULT_DSSOPT_khet,
-           het_window: int = DEFAULT_DSSOPT_het_window,
+           kpi: float = DSSOPT_DEFAULT_kpi,
+           kpa: float = DSSOPT_DEFAULT_kpa,
+           kpur: float = DSSOPT_DEFAULT_kpur,
+           kneg: float = DSSOPT_DEFAULT_kneg,
+           khet: float = DSSOPT_DEFAULT_khet,
+           het_window: int = DSSOPT_DEFAULT_het_window,
            do_movie_output :bool = False,
            verbose: bool = False,
            ) -> str:

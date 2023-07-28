@@ -17,12 +17,12 @@ void
 set_dss_force_constants_defaults(double *kpi, double *kpa, double *kneg,
                                  double *kpur, double *khet, uint *het_window)
 {
-    *kpi  = DEFAULT_DSSOPT_kpi;
-    *kpa  = DEFAULT_DSSOPT_kpa;
-    *kneg = DEFAULT_DSSOPT_kneg;
-    *kpur = DEFAULT_DSSOPT_kpur;
-    *khet = DEFAULT_DSSOPT_khet;
-    *het_window = DEFAULT_DSSOPT_het_window;
+    *kpi  = DSSOPT_DEFAULT_kpi;
+    *kpa  = DSSOPT_DEFAULT_kpa;
+    *kneg = DSSOPT_DEFAULT_kneg;
+    *kpur = DSSOPT_DEFAULT_kpur;
+    *khet = DSSOPT_DEFAULT_khet;
+    *het_window = DSSOPT_DEFAULT_het_window;
 }
 
 void

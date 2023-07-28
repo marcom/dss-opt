@@ -18,13 +18,13 @@
 #include <math.h>
 #include <string.h>
 
-const uint    DEFAULT_DSSOPT_ndim       = 4u;
-const double  DEFAULT_DSSOPT_kpi        = 50000.0;
-const double  DEFAULT_DSSOPT_kpa        = 50000.0;
-const double  DEFAULT_DSSOPT_kneg       = 1.0;
-const double  DEFAULT_DSSOPT_kpur       = 0.0;
-const double  DEFAULT_DSSOPT_khet       = 10.0;
-const uint    DEFAULT_DSSOPT_het_window = 3u;
+const uint    DSSOPT_DEFAULT_ndim       = 4u;
+const double  DSSOPT_DEFAULT_kpi        = 50000.0;
+const double  DSSOPT_DEFAULT_kpa        = 50000.0;
+const double  DSSOPT_DEFAULT_kneg       = 1.0;
+const double  DSSOPT_DEFAULT_kpur       = 0.0;
+const double  DSSOPT_DEFAULT_khet       = 10.0;
+const uint    DSSOPT_DEFAULT_het_window = 3u;
 
 uint
 x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
@@ -118,7 +118,7 @@ run_md(const char *vienna, const char *seq_constraints_hard,
        char *designed_seq)
 {
     uint i, j, step, n, *hard_constraints, n_hard_constr;
-    uint ndim = DEFAULT_DSSOPT_ndim;
+    uint ndim = DSSOPT_DEFAULT_ndim;
     double G, Gnn, **p, **v, **dGdp, *mass, kb = 1, ndof,
         T, T_target, T_end = 0.1, cool_rate, kpur = 0, pur_rate,
         ekin, estart = 0;
@@ -317,7 +317,7 @@ run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
        char *designed_seq)
 {
     uint i, j, step, n;
-    uint ndim = DEFAULT_DSSOPT_ndim;
+    uint ndim = DSSOPT_DEFAULT_ndim;
     double G, Gnn, **p, **dGdp, Gstart = 0, Gold, delta, tmp;
     double scale = 0.01, scale_min = 1e-8,
         scale_decrease = 0.5, scale_increase = 1.05;
