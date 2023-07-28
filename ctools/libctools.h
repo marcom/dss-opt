@@ -1,5 +1,5 @@
-#ifndef CT_GUARD_LIBCTOOLS_H
-#define CT_GUARD_LIBCTOOLS_H
+#ifndef DSSOPT_HEADER_LIBCTOOLS_H
+#define DSSOPT_HEADER_LIBCTOOLS_H
 
 #include <stdlib.h>
 
@@ -52,4 +52,4 @@ void xfail(const char *format, ...)
 
 
 
-#endif /* CT_GUARD_LIBCTOOLS_H */
+#endif /* DSSOPT_HEADER_LIBCTOOLS_H */

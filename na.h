@@ -1,5 +1,5 @@
-#ifndef NA_GUARD_NA_H
-#define NA_GUARD_NA_H
+#ifndef DSSOPT_HEADER_NA_H
+#define DSSOPT_HEADER_NA_H
 
 #include "ctools/libctools.h" /* we only need the typedefs */
 #include <limits.h>
@@ -127,4 +127,4 @@ void     dGdp_extloop_multiloop_pseq(double **p,
                                      double **dGdp);
 
 
-#endif /* NA_GUARD_NA_H */
+#endif /* DSSOPT_HEADER_NA_H */

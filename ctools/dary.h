@@ -1,5 +1,5 @@
-#ifndef CT_GUARD_DARY_H
-#define CT_GUARD_DARY_H
+#ifndef DSSOPT_HEADER_DARY_H
+#define DSSOPT_HEADER_DARY_H
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -14,4 +14,4 @@ bool dary2d_equal(double **a, double **b, size_t n1, size_t n2);
 void dary2d_print(double **a, size_t n1, size_t n2);
 bool dary2d_is_finite(double **a, size_t n1, size_t n2);
 
-#endif /* CT_GUARD_DARY_H */
+#endif /* DSSOPT_HEADER_DARY_H */

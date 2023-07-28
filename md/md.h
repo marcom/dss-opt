@@ -1,5 +1,5 @@
-#ifndef MD_GUARD_MD_UTIL_H
-#define MD_GUARD_MD_UTIL_H
+#ifndef DSSOPT_HEADER_MD_H
+#define DSSOPT_HEADER_MD_H
 
 /* TODO: only need the types defined in the header */
 #include "ctools/libctools.h"
@@ -34,4 +34,4 @@ md_integrate_step_leapfrog(uint n, uint ndim, double **r, double **v,
                            double **gradU, double *mass, double timestep);
 
 
-#endif /* MD_GUARD_MD_UTIL_H */
+#endif /* DSSOPT_HEADER_MD_H */

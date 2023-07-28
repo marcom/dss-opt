@@ -1,6 +1,6 @@
-#ifndef GUARD_NJ_PARAM_H
-#define GUARD_NJ_PARAM_H
+#ifndef DSSOPT_HEADER_NJ_PARAM_H
+#define DSSOPT_HEADER_NJ_PARAM_H
 
 extern const double K_NJ[4][4];
 
-#endif /* GUARD_NJ_PARAM_H */
+#endif /* DSSOPT_HEADER_NJ_PARAM_H */

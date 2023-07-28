@@ -1,5 +1,5 @@
-#ifndef GUARD_MAIN_HELPERS_OPT_H
-#define GUARD_MAIN_HELPERS_OPT_H
+#ifndef DSSOPT_HEADER_HELPERS_FOR_MAIN_OPT_H
+#define DSSOPT_HEADER_HELPERS_FOR_MAIN_OPT_H
 
 #include "na.h" /* struct nn_inter */
 #include "ctools/libctools.h" /* uint */
@@ -14,4 +14,4 @@ void print_design_score_info_for_seq(struct nn_inter *inter, char *seq,
                                      double kpa, double kpur, double kneg,
                                      double khet, uint het_window);
 
-#endif /* GUARD_MAIN_HELPERS_OPT_H */
+#endif /* DSSOPT_HEADER_HELPERS_FOR_MAIN_OPT_H */

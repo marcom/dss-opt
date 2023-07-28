@@ -1,5 +1,5 @@
-#ifndef CT_GUARD_NUM_UTILS_H
-#define CT_GUARD_NUM_UTILS_H
+#ifndef DSSOPT_HEADER_NUM_UTILS_H
+#define DSSOPT_HEADER_NUM_UTILS_H
 
 /* utility functions for numerical calculations */
 
@@ -7,4 +7,4 @@
    this is mainly useful when p is supposed to be a probability */
 double plogp_sane(double p);
 
-#endif /* CT_GUARD_NUM_UTILS_H */
+#endif /* DSSOPT_HEADER_NUM_UTILS_H */

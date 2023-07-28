@@ -1,5 +1,5 @@
-#ifndef NA_GUARD_OPT_H
-#define NA_GUARD_OPT_H
+#ifndef DSSOPT_HEADER_OPT_H
+#define DSSOPT_HEADER_OPT_H
 
 #include "ctools/libctools.h"
 #include <stdbool.h>
@@ -115,4 +115,4 @@ int run_sd(const char *vienna, uint maxsteps, uint nprint, double wiggle,
            uint het_window, bool do_movie_output, bool verbose,
            char *designed_seq);
 
-#endif /* NA_GUARD_OPT_H */
+#endif /* DSSOPT_HEADER_OPT_H */

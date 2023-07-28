@@ -1,5 +1,5 @@
-#ifndef GUARD_MAIN_HELPERS_H
-#define GUARD_MAIN_HELPERS_H
+#ifndef DSSOPT_HEADER_HELPERS_FOR_MAIN_H
+#define DSSOPT_HEADER_HELPERS_FOR_MAIN_H
 
 #include "ctools/libctools.h"
 #include "ctools/num_utils.h"
@@ -15,4 +15,4 @@ size_t fix_bad_bp(char *seq, uint *pairs, size_t n);
 void show_bad_prob(double **p, size_t n1, size_t n2, bool verbose);
 void print_for_movie(double **p, size_t n, size_t ndim, char *seq);
 
-#endif /* GUARD_MAIN_HELPERS_H */
+#endif /* DSSOPT_HEADER_HELPERS_FOR_MAIN_H */

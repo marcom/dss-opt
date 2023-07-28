@@ -1,5 +1,5 @@
-#ifndef CT_GUARD_RANDOM_H
-#define CT_GUARD_RANDOM_H
+#ifndef DSSOPT_HEADER_RANDOM_H
+#define DSSOPT_HEADER_RANDOM_H
 
 #include "libctools.h"
 
@@ -30,4 +30,4 @@ double random_double_normal(double mu, double sigma);
    very small but nonzero probability that this function will not terminate */
 void random_dvec_uniform_direction(uint ndim, double *v);
 
-#endif /* CT_GUARD_RANDOM_H */
+#endif /* DSSOPT_HEADER_RANDOM_H */

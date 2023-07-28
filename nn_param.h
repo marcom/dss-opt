@@ -1,5 +1,5 @@
-#ifndef GUARD_NN_PARAM_H
-#define GUARD_NN_PARAM_H
+#ifndef DSSOPT_HEADER_NN_PARAM_H
+#define DSSOPT_HEADER_NN_PARAM_H
 
 
 #define NN_INF 1000000
@@ -33,4 +33,4 @@ extern const unsigned int nn_tetraloop_loop[][4];
 extern const int nn_G_tetraloop[];
 
 
-#endif /* GUARD_NN_PARAM_H */
+#endif /* DSSOPT_HEADER_NN_PARAM_H */

@@ -1,5 +1,5 @@
-#ifndef NA_GUARD_DSS_H
-#define NA_GUARD_DSS_H
+#ifndef DSSOPT_HEADER_DSS_H
+#define DSSOPT_HEADER_DSS_H
 
 /* TODO: only need uint typedef */
 #include "ctools/libctools.h"
@@ -31,4 +31,4 @@ void   dss_calc_gradU_het(double **p, uint n, uint ndim, double khet,
                           uint het_window, uint *pairs, double **gradU);
 
 
-#endif /* NA_GUARD_DSS_H */
+#endif /* DSSOPT_HEADER_DSS_H */
