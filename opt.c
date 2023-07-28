@@ -26,6 +26,17 @@ const double  DSSOPT_DEFAULT_kpur       = 0.0;
 const double  DSSOPT_DEFAULT_khet       = 10.0;
 const uint    DSSOPT_DEFAULT_het_window = 3u;
 
+const double  DSSOPT_DEFAULT_OPT_MD_time_total = 50.0;
+const double  DSSOPT_DEFAULT_OPT_MD_time_print = 2.5;
+const double  DSSOPT_DEFAULT_OPT_MD_time_cool  = 0.1 * DSSOPT_DEFAULT_OPT_MD_time_total;
+const double  DSSOPT_DEFAULT_OPT_MD_time_pur   = 0.8 * DSSOPT_DEFAULT_OPT_MD_time_total;
+const double  DSSOPT_DEFAULT_OPT_MD_timestep   = 0.0015;
+const double  DSSOPT_DEFAULT_OPT_MD_T_start    = 40.0;
+
+const uint    DSSOPT_DEFAULT_OPT_SD_maxsteps = 20000;
+const uint    DSSOPT_DEFAULT_OPT_SD_nprint   = 1000;
+const double  DSSOPT_DEFAULT_OPT_SD_wiggle   = 0.1;
+
 uint
 x_parse_seq_constraints_hard(uint n, uint *hard, const char *constraint_str,
                              const uint *pairs)

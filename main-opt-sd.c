@@ -34,8 +34,9 @@ main(int argc, char **argv)
     char *vienna = NULL;
 
     /* default settings */
-    uint maxsteps = 20000, nprint = 1000;
-    double wiggle = 0.1;
+    uint maxsteps = DSSOPT_DEFAULT_OPT_SD_maxsteps;
+    uint nprint   = DSSOPT_DEFAULT_OPT_SD_nprint;
+    double wiggle = DSSOPT_DEFAULT_OPT_SD_wiggle;
     double kpi, kpa, kneg, kpur, khet;
     uint het_window;
     bool do_movie_output = false, verbose = true;

@@ -40,9 +40,12 @@ main(int argc, char **argv)
 
     /* default settings */
     bool do_exp_cool = false, do_movie_output = false, verbose = true;
-    double timestep = 0.0015, T_start = 40.0,
-        time_total = 50.0, time_print = 2.5, time_cool = 0.1 * time_total,
-        time_pur = 0.8 * time_total;
+    double timestep   = DSSOPT_DEFAULT_OPT_MD_timestep,
+           T_start    = DSSOPT_DEFAULT_OPT_MD_T_start,
+           time_total = DSSOPT_DEFAULT_OPT_MD_time_total,
+           time_print = DSSOPT_DEFAULT_OPT_MD_time_print,
+           time_cool  = DSSOPT_DEFAULT_OPT_MD_time_cool,
+           time_pur   = DSSOPT_DEFAULT_OPT_MD_time_pur;
     double kpi, kpa, kneg, kpur_end, khet;
     uint het_window;
     ulong seed = random_get_seedval_from_current_time();

@@ -12,6 +12,17 @@ extern const double  DSSOPT_DEFAULT_kpur;
 extern const double  DSSOPT_DEFAULT_khet;
 extern const uint    DSSOPT_DEFAULT_het_window;
 
+extern const double  DSSOPT_DEFAULT_OPT_MD_time_total;
+extern const double  DSSOPT_DEFAULT_OPT_MD_time_print;
+extern const double  DSSOPT_DEFAULT_OPT_MD_time_cool;
+extern const double  DSSOPT_DEFAULT_OPT_MD_time_pur;
+extern const double  DSSOPT_DEFAULT_OPT_MD_timestep;
+extern const double  DSSOPT_DEFAULT_OPT_MD_T_start;
+
+extern const uint    DSSOPT_DEFAULT_OPT_SD_maxsteps;
+extern const uint    DSSOPT_DEFAULT_OPT_SD_nprint;
+extern const double  DSSOPT_DEFAULT_OPT_SD_wiggle;
+
 /**
  * @brief Parse a hard sequence constraints string to an integer
  * encoding, exiting on failure.
