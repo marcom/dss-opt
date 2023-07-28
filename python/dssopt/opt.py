@@ -70,9 +70,9 @@ def opt_md(target_dbn: str,
         str: The designed sequence
     """
     if time_cool == None:
-        time_cool = 0.1 * time_total
+        time_cool = libdssopt.dssopt_default_opt_md_time_cool(time_total)
     if time_pur == None:
-        time_pur = 0.8 * time_total
+        time_pur = libdssopt.dssopt_default_opt_md_time_pur(time_total)
     if time_total < 0 or time_print < 0 or time_cool < 0:
         raise Exception('All times must be >= 0')
     if timestep < 0:

@@ -26,6 +26,10 @@ DSSOPT_DEFAULT_OPT_MD_timestep   = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OP
 DSSOPT_DEFAULT_OPT_MD_time_total = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_time_total').value
 DSSOPT_DEFAULT_OPT_MD_time_print = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_time_print').value
 DSSOPT_DEFAULT_OPT_MD_T_start    = c_double.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_MD_T_start').value
+libdssopt.dssopt_default_opt_md_time_cool.argtypes = [ c_double ]
+libdssopt.dssopt_default_opt_md_time_cool.restype  = c_double
+libdssopt.dssopt_default_opt_md_time_pur.argtypes = [ c_double ]
+libdssopt.dssopt_default_opt_md_time_pur.restype  = c_double
 
 DSSOPT_DEFAULT_OPT_SD_maxsteps   = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_SD_maxsteps').value
 DSSOPT_DEFAULT_OPT_SD_nprint     = c_uint.in_dll(libdssopt, 'DSSOPT_DEFAULT_OPT_SD_nprint').value
