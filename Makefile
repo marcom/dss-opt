@@ -1,4 +1,5 @@
-.PHONY: all lib clean check check-valgrind check-python unittest unittest-valgrind
+.PHONY: all lib clean check check-valgrind check-python
+.PHONY: unittest unittest-valgrind python-ctypesgen
 
 CC      = cc
 CFLAGS += -std=c99
@@ -51,10 +52,13 @@ check-valgrind: all unittest-valgrind
 	@echo "#####################################"
 	./tests/test-executables.bash --valgrind
 
-check-python:
+check-python: python-ctypesgen
 	. ./python/venv/bin/activate && \
 	  pip install ./python/[test] && \
 	  pytest
+
+python-ctypesgen:
+	python python/setup.py ctypesgen
 
 unittest: lib
 	make -C unittest check
