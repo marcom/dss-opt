@@ -2,7 +2,6 @@ import dssopt.lib as lib
 
 # TODO
 # - use str_to_useq here
-# - pytest for calc_interactions_useq, mirroring C unit test
 
 def calc_interactions_useq(seq: str, dbn: str) -> int:
     if len(seq) != len(dbn):
