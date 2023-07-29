@@ -298,12 +298,16 @@ nn_multiloop_free(struct nn_multiloop *ml)
 struct nn_inter *
 nn_inter_xnew(uint n)
 {
-    /* TODO: memory waste here, but works ok for now */
+    /* TODO: memory waste here, but works ok for now (always allocates
+       size n or n^2 structures) */
     uint i;
     struct nn_inter *inter;
     inter = xmalloc(sizeof(*inter));
     inter->n = n;
     inter->pairs = xmalloc(n * sizeof(*inter->pairs));
+    for (i = 0; i < n; i++) {
+        inter->pairs[i] = NA_UNPAIRED;
+    }
     inter->nstack = 0;
     inter->stack = xmalloc(n * sizeof(*inter->stack));
     inter->nhairpin = 0;
