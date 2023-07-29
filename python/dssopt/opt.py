@@ -69,9 +69,9 @@ def opt_md(target_dbn: str,
     Returns:
         str: The designed sequence
     """
-    if time_cool == None:
+    if time_cool is None:
         time_cool = lib.dssopt_default_opt_md_time_cool(time_total)
-    if time_pur == None:
+    if time_pur is None:
         time_pur = lib.dssopt_default_opt_md_time_pur(time_total)
     if time_total < 0 or time_print < 0 or time_cool < 0:
         raise Exception('All times must be >= 0')
@@ -85,14 +85,14 @@ def opt_md(target_dbn: str,
     nprint = c_uint(round(time_print / timestep))
     ncool  = c_uint(round(time_cool  / timestep))
     npur   = c_uint(round(time_pur   / timestep))
-    if seed == None:
+    if seed is None:
         seed = lib.random_get_seedval_from_current_time()
     lib.random_seed(seed)
 
     timestep = c_double(timestep)
     T_start = c_double(T_start)
     vienna = target_dbn.encode('utf-8')
-    if seq_constraints_hard == None:
+    if seq_constraints_hard is None:
         seq_constraints_hard = c_char_p()
     else:
         seq_constraints_hard = seq_constraints_hard.encode('utf-8')
@@ -148,7 +148,7 @@ def opt_sd(target_dbn: str,
         raise Exception('maxsteps must be > 0')
     if het_window < 0:
         raise Exception('het_window must be >= 0')
-    if seed == None:
+    if seed is None:
         seed = lib.random_get_seedval_from_current_time()
     lib.random_seed(seed)
     vienna = target_dbn.encode('utf-8')
