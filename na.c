@@ -322,6 +322,10 @@ nn_inter_xnew(uint n)
     inter->extloop.stems = xmalloc(n * sizeof(*inter->extloop.stems));
     inter->extloop.dangle5 = xmalloc(n * sizeof(*inter->extloop.dangle5));
     inter->extloop.dangle3 = xmalloc(n * sizeof(*inter->extloop.dangle3));
+    inter->extloop.unpaired = 0;
+    inter->extloop.nstems = 0;
+    inter->extloop.ndangle5 = 0;
+    inter->extloop.ndangle3 = 0;
     /* TODO: temporary hack until nn_multiloop_xfind is fixed */
     for (i = 0; i < n; i++) {
         inter->multiloop[i].stems =
