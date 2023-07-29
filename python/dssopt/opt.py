@@ -1,7 +1,7 @@
 from typing import Union
 
 import dssopt.lib as lib
-from dssopt.lib import libdssopt, list_to_carray
+from dssopt.lib import list_to_carray
 from dssopt.lib import c_bool, c_char_p, c_double, c_uint, create_string_buffer
 
 def isok_seq_constraints(constraints: str, vienna: str) -> bool:
@@ -16,7 +16,7 @@ def isok_seq_constraints(constraints: str, vienna: str) -> bool:
     pairs = list_to_carray([0] * n, c_uint)
     verbose = c_bool(True)
     c_constraints = constraints.encode('utf-8')
-    status = libdssopt.parse_seq_constraints_hard(c_n, hard, n_hard, c_constraints, verbose, pairs)
+    status = lib.parse_seq_constraints_hard(c_n, hard, n_hard, c_constraints, verbose, pairs)
     if status == lib.C_EXIT_SUCCESS:
         return True
     return False
@@ -25,18 +25,18 @@ def opt_md(target_dbn: str,
            seed: Union[int, None] = None,
            seq_constraints_hard: Union[str, None] = None,
            # default values taken from main-opt-md.c
-           time_total: float = lib.DSSOPT_DEFAULT_OPT_MD_time_total,
-           time_print: float = lib.DSSOPT_DEFAULT_OPT_MD_time_print,
+           time_total: float = lib.DSSOPT_DEFAULT_OPT_MD_time_total.value,
+           time_print: float = lib.DSSOPT_DEFAULT_OPT_MD_time_print.value,
            time_cool: Union[float, None] = None,
            time_pur: Union[float, None] = None,
-           timestep: float = lib.DSSOPT_DEFAULT_OPT_MD_timestep,
-           T_start: float = lib.DSSOPT_DEFAULT_OPT_MD_T_start,
-           kpi: float = lib.DSSOPT_DEFAULT_kpi,
-           kpa: float = lib.DSSOPT_DEFAULT_kpa,
-           kneg: float = lib.DSSOPT_DEFAULT_kneg,
-           kpur_end: float = lib.DSSOPT_DEFAULT_kpur,
-           khet: float = lib.DSSOPT_DEFAULT_khet,
-           het_window: int = lib.DSSOPT_DEFAULT_het_window,
+           timestep: float = lib.DSSOPT_DEFAULT_OPT_MD_timestep.value,
+           T_start: float = lib.DSSOPT_DEFAULT_OPT_MD_T_start.value,
+           kpi: float = lib.DSSOPT_DEFAULT_kpi.value,
+           kpa: float = lib.DSSOPT_DEFAULT_kpa.value,
+           kneg: float = lib.DSSOPT_DEFAULT_kneg.value,
+           kpur_end: float = lib.DSSOPT_DEFAULT_kpur.value,
+           khet: float = lib.DSSOPT_DEFAULT_khet.value,
+           het_window: int = lib.DSSOPT_DEFAULT_het_window.value,
            do_exp_cool: bool = False,
            do_movie_output :bool = False,
            verbose: bool = False,
@@ -70,9 +70,9 @@ def opt_md(target_dbn: str,
         str: The designed sequence
     """
     if time_cool == None:
-        time_cool = libdssopt.dssopt_default_opt_md_time_cool(time_total)
+        time_cool = lib.dssopt_default_opt_md_time_cool(time_total)
     if time_pur == None:
-        time_pur = libdssopt.dssopt_default_opt_md_time_pur(time_total)
+        time_pur = lib.dssopt_default_opt_md_time_pur(time_total)
     if time_total < 0 or time_print < 0 or time_cool < 0:
         raise Exception('All times must be >= 0')
     if timestep < 0:
@@ -86,8 +86,8 @@ def opt_md(target_dbn: str,
     ncool  = c_uint(round(time_cool  / timestep))
     npur   = c_uint(round(time_pur   / timestep))
     if seed == None:
-        seed = libdssopt.random_get_seedval_from_current_time()
-    libdssopt.random_seed(seed)
+        seed = lib.random_get_seedval_from_current_time()
+    lib.random_seed(seed)
 
     timestep = c_double(timestep)
     T_start = c_double(T_start)
@@ -99,7 +99,7 @@ def opt_md(target_dbn: str,
 
     # + 1 for C-style 0-terminated strings
     designed_seq_buf = create_string_buffer(len(target_dbn) + 1)
-    status = libdssopt.run_md(vienna, seq_constraints_hard, nsteps, nprint, ncool, npur,
+    status = lib.run_md(vienna, seq_constraints_hard, nsteps, nprint, ncool, npur,
                               timestep, T_start, kpi, kpa, kneg, khet, het_window, kpur_end,
                               do_exp_cool, do_movie_output, verbose, designed_seq_buf)
     if status != lib.C_EXIT_SUCCESS:
@@ -110,15 +110,15 @@ def opt_md(target_dbn: str,
 def opt_sd(target_dbn: str,
            seed: Union[int, None] = None,
            # TODO: taken from main-opt-sd.c
-           maxsteps: int = lib.DSSOPT_DEFAULT_OPT_SD_maxsteps,
-           nprint: int = lib.DSSOPT_DEFAULT_OPT_SD_nprint,
-           wiggle: float = lib.DSSOPT_DEFAULT_OPT_SD_wiggle,
-           kpi: float = lib.DSSOPT_DEFAULT_kpi,
-           kpa: float = lib.DSSOPT_DEFAULT_kpa,
-           kpur: float = lib.DSSOPT_DEFAULT_kpur,
-           kneg: float = lib.DSSOPT_DEFAULT_kneg,
-           khet: float = lib.DSSOPT_DEFAULT_khet,
-           het_window: int = lib.DSSOPT_DEFAULT_het_window,
+           maxsteps: int = lib.DSSOPT_DEFAULT_OPT_SD_maxsteps.value,
+           nprint: int = lib.DSSOPT_DEFAULT_OPT_SD_nprint.value,
+           wiggle: float = lib.DSSOPT_DEFAULT_OPT_SD_wiggle.value,
+           kpi: float = lib.DSSOPT_DEFAULT_kpi.value,
+           kpa: float = lib.DSSOPT_DEFAULT_kpa.value,
+           kpur: float = lib.DSSOPT_DEFAULT_kpur.value,
+           kneg: float = lib.DSSOPT_DEFAULT_kneg.value,
+           khet: float = lib.DSSOPT_DEFAULT_khet.value,
+           het_window: int = lib.DSSOPT_DEFAULT_het_window.value,
            do_movie_output :bool = False,
            verbose: bool = False,
            ) -> str:
@@ -149,14 +149,15 @@ def opt_sd(target_dbn: str,
     if het_window < 0:
         raise Exception('het_window must be >= 0')
     if seed == None:
-        seed = libdssopt.random_get_seedval_from_current_time()
-    libdssopt.random_seed(seed)
+        seed = lib.random_get_seedval_from_current_time()
+    lib.random_seed(seed)
     vienna = target_dbn.encode('utf-8')
     # + 1 for C-style 0-terminated strings
     designed_seq_buf = create_string_buffer(len(target_dbn) + 1)
-    status = libdssopt.run_sd(vienna, maxsteps, nprint, wiggle,
-                              kpi, kpa, kpur, kneg, khet, het_window,
-                              do_movie_output, verbose, designed_seq_buf)
+    status = lib.run_sd(vienna, maxsteps, nprint, wiggle, kpi, kpa,
+                        kpur, kneg, khet, het_window,
+                        do_movie_output, verbose,
+                        designed_seq_buf)
     if status != lib.C_EXIT_SUCCESS:
         raise Exception(f'run_sd returned non-zero exit status: {status}')
     designed_seq = designed_seq_buf.value.decode('utf-8')

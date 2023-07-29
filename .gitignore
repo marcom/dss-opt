@@ -28,6 +28,7 @@
 
 # python files
 /python/build
+/python/build.ctypesgen-venv
 /python/venv
 *.egg-info
 __pycache__/
