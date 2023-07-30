@@ -17,5 +17,7 @@ def calc_interactions_useq(seq: str, dbn: str) -> int:
         raise RuntimeError("vienna_to_pairs failed: n={n} vienna={vienna}")
     lib.find_interactions(inter)
     en = lib.calc_interactions_useq(inter, useq)
+    # TODO: can anything be double-freed here, when later
+    # inter.__del__() is run?
     lib.nn_inter_delete(inter)
     return en
