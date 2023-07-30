@@ -37,7 +37,10 @@ import dssopt
         ({'seq': 'AGGACC', 'dbn': '......'}, 0),
     ]
 )
-def test_calc_interactions_useq(kwargs, expected):
+def test_nnstruct_energy_useq(kwargs, expected):
     print(kwargs)
-    result = dssopt.calc_interactions_useq(**kwargs)
+    seq = kwargs['seq']
+    dbn = kwargs['dbn']
+    s = dssopt.NNstruct(dbn)
+    result = s.energy_useq(seq)
     assert result == expected
