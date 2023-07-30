@@ -58,7 +58,7 @@ check-python: python-ctypesgen
 	  pytest
 
 python-ctypesgen:
-	python python/setup.py ctypesgen
+	python3 python/setup.py ctypesgen
 
 unittest: lib
 	make -C unittest check
