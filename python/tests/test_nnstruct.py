@@ -44,3 +44,5 @@ def test_nnstruct_energy_useq(kwargs, expected):
     s = dssopt.NNstruct(dbn)
     result = s.energy_useq(seq)
     assert result == expected
+    result_pseq = s.energy_pseq_from_str(seq)
+    assert result_pseq == expected
