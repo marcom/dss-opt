@@ -45,17 +45,21 @@ def test_nnstruct(kwargs, expected):
     n = len(seq)
     na = 4
     s = dssopt.NNstruct(dbn)
+
     # energy_useq
     result = s.energy_useq(seq)
     assert result == expected
+
     # energy_pseq
     result_pseq = s.energy_pseq_from_str(seq)
     assert result_pseq == expected
+
     # dGdp
     pseq = 0.25 * np.ones((n, na))
     g = s.dGdp(pseq)
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)
+
     # U_negdesign_nj
     U = s.U_negdesign_nj(pseq)
     assert isinstance(U, float)
@@ -73,6 +77,7 @@ def test_nnstruct(kwargs, expected):
     g = s.gradU_negdesign_nj(pseq, K_nj = np.ones((na,na)))
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)
+
     # U_het
     U = s.U_het(pseq)
     assert isinstance(U, float)
@@ -88,5 +93,18 @@ def test_nnstruct(kwargs, expected):
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)
     g = s.gradU_het(pseq, het_window_size = 5)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+
+    # U_pa
+    U = s.U_pa(pseq)
+    assert isinstance(U, float)
+    U = s.U_pa(pseq, kpa = 20.0)
+    assert isinstance(U, float)
+    # gradU_pa
+    g = s.gradU_pa(pseq)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+    g = s.gradU_pa(pseq, kpa = 42.0)
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)

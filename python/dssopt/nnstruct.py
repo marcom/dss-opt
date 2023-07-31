@@ -151,3 +151,30 @@ class NNstruct(lib.struct_nn_inter):
             self.inter.contents.pairs, self._wrap_out_dGdp.ctype_arr
         )
         return self._wrap_out_dGdp.arr
+
+    def U_pa(self, pseq: np.ndarray, *,
+             kpa: float=lib.DSSOPT_DEFAULT_kpa.value) -> float:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        wrap_pseq = lib.c_npmat(pseq)
+        en = lib.dss_calc_U_pa(wrap_pseq.ctype_arr, self.n, self.nbase, kpa)
+        return en
+
+    def gradU_pa(self, pseq: np.ndarray, *,
+                 kpa: float=lib.DSSOPT_DEFAULT_kpa.value) -> np.ndarray:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        if self._wrap_out_dGdp is None:
+            self._wrap_out_dGdp = lib.c_npmat(np.zeros_like(pseq))
+        else:
+            self._wrap_out_dGdp[:] = 0.0
+        wrap_pseq = lib.c_npmat(pseq)
+        lib.dss_calc_gradU_pa(
+            wrap_pseq.ctype_arr, self.n, self.nbase, kpa,
+            self._wrap_out_dGdp.ctype_arr
+        )
+        return self._wrap_out_dGdp.arr
