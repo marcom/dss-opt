@@ -1,5 +1,6 @@
 import pytest
 import dssopt
+import numpy as np
 
 @pytest.mark.parametrize(
     "kwargs, expected",
@@ -46,3 +47,8 @@ def test_nnstruct_energy_useq(kwargs, expected):
     assert result == expected
     result_pseq = s.energy_pseq_from_str(seq)
     assert result_pseq == expected
+    n = len(seq)
+    na = 4
+    g = s.dGdp(0.25 * np.ones((n, na)))
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
