@@ -38,17 +38,38 @@ import numpy as np
         ({'seq': 'AGGACC', 'dbn': '......'}, 0),
     ]
 )
-def test_nnstruct_energy_useq(kwargs, expected):
+def test_nnstruct(kwargs, expected):
     print(kwargs)
     seq = kwargs['seq']
     dbn = kwargs['dbn']
-    s = dssopt.NNstruct(dbn)
-    result = s.energy_useq(seq)
-    assert result == expected
-    result_pseq = s.energy_pseq_from_str(seq)
-    assert result_pseq == expected
     n = len(seq)
     na = 4
-    g = s.dGdp(0.25 * np.ones((n, na)))
+    s = dssopt.NNstruct(dbn)
+    # energy_useq
+    result = s.energy_useq(seq)
+    assert result == expected
+    # energy_pseq
+    result_pseq = s.energy_pseq_from_str(seq)
+    assert result_pseq == expected
+    # dGdp
+    pseq = 0.25 * np.ones((n, na))
+    g = s.dGdp(pseq)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+    # U_negdesign_nj
+    U = s.U_negdesign_nj(pseq)
+    assert isinstance(U, float)
+    U = s.U_negdesign_nj(pseq, kneg = 20.0)
+    assert isinstance(U, float)
+    U = s.U_negdesign_nj(pseq, K_nj = np.ones((na,na)))
+    assert isinstance(U, float)
+    # gradU_negdesign_nj
+    g = s.gradU_negdesign_nj(pseq)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+    g = s.gradU_negdesign_nj(pseq, kneg=42.0)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+    g = s.gradU_negdesign_nj(pseq, K_nj = np.ones((na,na)))
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)

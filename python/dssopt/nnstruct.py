@@ -1,5 +1,6 @@
 import dssopt.lib as lib
 import numpy as np
+from typing import Union
 
 # TODO
 # - use str_to_useq here instead of xstr_to_useq
@@ -76,3 +77,44 @@ class NNstruct(lib.struct_nn_inter):
             raise RuntimeError(f'seq must have length {self.n}, but has length {len(seq)}')
         pseq = one_hot_seq(seq)
         return self.dGdp(pseq)
+
+    def U_negdesign_nj(self, pseq: np.ndarray, *,
+                       kneg: float=lib.DSSOPT_DEFAULT_kneg.value,
+                       K_nj: Union[np.ndarray,None]=None) -> float:
+        if pseq.ndim != 2:
+            raise RuntimeError('pseq must be a matrix')
+        (n, na) = pseq.shape
+        wrap_pseq = lib.c_npmat(pseq)
+        if K_nj is None:
+            wrap_K_nj = lib.K_nj_wrap
+        else:
+            if K_nj.shape != (na, na):
+                raise RuntimeError(f'K_nj must have shape ({na}, {na}), as pseq has shape ({n}, {na})')
+            wrap_K_nj = lib.c_npmat(K_nj)
+        en = lib.dss_calc_U_negdesign_nj(wrap_pseq.ctype_arr, n, na, kneg,
+                                         wrap_K_nj.ctype_arr, self.inter.contents.pairs)
+        return en
+
+    def gradU_negdesign_nj(self, pseq: np.ndarray, kneg: float=lib.DSSOPT_DEFAULT_kneg.value,
+                           K_nj: Union[np.ndarray,None]=None) -> np.ndarray:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        if self._wrap_out_dGdp is None:
+            self._wrap_out_dGdp = lib.c_npmat(np.zeros_like(pseq))
+        else:
+            self._wrap_out_dGdp[:] = 0.0
+        if K_nj is None:
+            wrap_K_nj = lib.K_nj_wrap
+        else:
+            if K_nj.shape != (self.nbase, self.nbase):
+                raise RuntimeError(f'K_nj must have shape ({self.nbase}, {self.nbase}),'
+                                   f' as pseq has shape ({self.n}, {self.nbase})')
+            wrap_K_nj = lib.c_npmat(K_nj)
+        wrap_pseq = lib.c_npmat(pseq)
+        lib.dss_calc_gradU_negdesign_nj(
+            wrap_pseq.ctype_arr, self.n, self.nbase, kneg, wrap_K_nj.ctype_arr,
+            self.inter.contents.pairs, self._wrap_out_dGdp.ctype_arr
+        )
+        return self._wrap_out_dGdp.arr

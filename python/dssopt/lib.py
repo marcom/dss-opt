@@ -56,3 +56,14 @@ class c_npmat():
     @property
     def ctype_arr(self):
         return self._row_cptrs
+
+
+NBASE = 4
+
+K_nj = np.zeros((NBASE, NBASE))
+_tmp_k_nj_ptr = helper_make_K_nj_alloc(NBASE)
+for i in range(NBASE):
+    for j in range(NBASE):
+        K_nj[i, j] = _tmp_k_nj_ptr[i][j]
+# del _tmp_k_nj_ptr
+K_nj_wrap = c_npmat(K_nj)
