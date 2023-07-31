@@ -95,7 +95,8 @@ class NNstruct(lib.struct_nn_inter):
                                          wrap_K_nj.ctype_arr, self.inter.contents.pairs)
         return en
 
-    def gradU_negdesign_nj(self, pseq: np.ndarray, kneg: float=lib.DSSOPT_DEFAULT_kneg.value,
+    def gradU_negdesign_nj(self, pseq: np.ndarray, *,
+                           kneg: float=lib.DSSOPT_DEFAULT_kneg.value,
                            K_nj: Union[np.ndarray,None]=None) -> np.ndarray:
         if pseq.shape != (self.n, self.nbase):
             raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
@@ -115,6 +116,38 @@ class NNstruct(lib.struct_nn_inter):
         wrap_pseq = lib.c_npmat(pseq)
         lib.dss_calc_gradU_negdesign_nj(
             wrap_pseq.ctype_arr, self.n, self.nbase, kneg, wrap_K_nj.ctype_arr,
+            self.inter.contents.pairs, self._wrap_out_dGdp.ctype_arr
+        )
+        return self._wrap_out_dGdp.arr
+
+    def U_het(self, pseq: np.ndarray, *,
+              khet: float=lib.DSSOPT_DEFAULT_khet.value,
+              het_window_size: int=lib.DSSOPT_DEFAULT_het_window.value
+              ) -> float:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        wrap_pseq = lib.c_npmat(pseq)
+        en = lib.dss_calc_U_het(wrap_pseq.ctype_arr, self.n, self.nbase, khet,
+                                het_window_size, self.inter.contents.pairs)
+        return en
+
+    def gradU_het(self, pseq: np.ndarray, *,
+                  khet: float=lib.DSSOPT_DEFAULT_khet.value,
+                  het_window_size: int=lib.DSSOPT_DEFAULT_het_window.value
+                  ) -> np.ndarray:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        if self._wrap_out_dGdp is None:
+            self._wrap_out_dGdp = lib.c_npmat(np.zeros_like(pseq))
+        else:
+            self._wrap_out_dGdp[:] = 0.0
+        wrap_pseq = lib.c_npmat(pseq)
+        lib.dss_calc_gradU_het(
+            wrap_pseq.ctype_arr, self.n, self.nbase, khet, het_window_size,
             self.inter.contents.pairs, self._wrap_out_dGdp.ctype_arr
         )
         return self._wrap_out_dGdp.arr
