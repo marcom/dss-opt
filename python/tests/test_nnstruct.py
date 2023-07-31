@@ -60,6 +60,10 @@ def test_nnstruct(kwargs, expected):
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)
 
+    # random_seq
+    randseq = s.random_seq()
+    assert len(randseq) == n
+
     # U_negdesign_nj
     U = s.U_negdesign_nj(pseq)
     assert isinstance(U, float)

@@ -36,6 +36,17 @@ class NNstruct(lib.struct_nn_inter):
     def __del__(self):
         lib.nn_inter_delete(self.inter)
 
+    def random_seq(self):
+        useq = lib.list_to_carray([0] * self.n, lib.c_uint)
+        lib.random_useq(self.n, self.inter.contents.pairs, useq)
+        seq_buf = lib.create_string_buffer(self.n + 1)
+        verbose = True
+        ret = lib.useq_to_str(self.n, useq, verbose, seq_buf)
+        if ret != lib.C_EXIT_SUCCESS:
+            raise RuntimeError(f'useq_to_str failed, useq = {useq}')
+        seq = seq_buf.value.decode('utf-8')
+        return seq
+
     def energy_useq(self, seq: str) -> int:
         # original function: calc_interactions_useq
         useq = lib.list_to_carray([0] * self.n, lib.c_uint)
