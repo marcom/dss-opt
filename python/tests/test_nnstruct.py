@@ -108,3 +108,16 @@ def test_nnstruct(kwargs, expected):
     g = s.gradU_pa(pseq, kpa = 42.0)
     assert isinstance(g, np.ndarray)
     assert g.shape == (n, na)
+
+    # U_pi
+    U = s.U_pi(pseq)
+    assert isinstance(U, float)
+    U = s.U_pi(pseq, kpi = 20.0)
+    assert isinstance(U, float)
+    # gradU_pi
+    g = s.gradU_pi(pseq)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
+    g = s.gradU_pi(pseq, kpi = 42.0)
+    assert isinstance(g, np.ndarray)
+    assert g.shape == (n, na)
