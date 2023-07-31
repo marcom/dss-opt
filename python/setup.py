@@ -60,6 +60,9 @@ setup(
         'ctypesgen': RunCtypesGen
     },
     # ext_modules=[dssopt_module],
+    install_requires = [
+        'numpy',
+    ],
     extras_require = {
         'test': ['pytest',],
     },
