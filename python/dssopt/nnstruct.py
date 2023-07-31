@@ -205,3 +205,30 @@ class NNstruct(lib.struct_nn_inter):
             self._wrap_out_dGdp.ctype_arr
         )
         return self._wrap_out_dGdp.arr
+
+    def U_pur_cauchy(self, pseq: np.ndarray, *,
+                     kpur: float=lib.DSSOPT_DEFAULT_kpur.value) -> float:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        wrap_pseq = lib.c_npmat(pseq)
+        en = lib.dss_calc_U_pur_cauchy(wrap_pseq.ctype_arr, self.n, self.nbase, kpur)
+        return en
+
+    def gradU_pur_cauchy(self, pseq: np.ndarray, *,
+                         kpur: float=lib.DSSOPT_DEFAULT_kpur.value) -> np.ndarray:
+        if pseq.shape != (self.n, self.nbase):
+            raise RuntimeError(f'pseq must have shape ({self.n}, {self.nbase})')
+        if pseq.dtype != np.dtype('float64'):
+            raise RuntimeError('pseq must have dytpe float64')
+        if self._wrap_out_dGdp is None:
+            self._wrap_out_dGdp = lib.c_npmat(np.zeros_like(pseq))
+        else:
+            self._wrap_out_dGdp[:] = 0.0
+        wrap_pseq = lib.c_npmat(pseq)
+        lib.dss_calc_gradU_pur_cauchy(
+            wrap_pseq.ctype_arr, self.n, self.nbase, kpur,
+            self._wrap_out_dGdp.ctype_arr
+        )
+        return self._wrap_out_dGdp.arr
